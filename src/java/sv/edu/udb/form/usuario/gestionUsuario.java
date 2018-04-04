@@ -30,7 +30,7 @@ public class gestionUsuario extends javax.swing.JInternalFrame {
     private DefaultTableModel modelo = null;
     private List<Usuario> usuarios = new ArrayList<Usuario>();
     private List<TipoUsuario> tipos = new ArrayList<TipoUsuario>();
-    private int idUsuarioSeleccionado = -1;
+    private String idUsuarioSeleccionado = "";
     
     /**
      * Creates new form gestionUsuario
@@ -75,7 +75,7 @@ public class gestionUsuario extends javax.swing.JInternalFrame {
         txtCorreo.setText("");
         txtFechaNacimiento.setText("");        
         cmbEstado.setSelectedIndex(0);
-        idUsuarioSeleccionado = -1;
+        idUsuarioSeleccionado = "";
     }
 
     /**
@@ -344,7 +344,7 @@ public class gestionUsuario extends javax.swing.JInternalFrame {
 
     //Modificar Usuario
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        if(idUsuarioSeleccionado > -1){
+        if(idUsuarioSeleccionado.length() > 0){
             if(validarCampos()){
                 if(Usuario_Model.verificarCorreo(txtCorreo.getText(), idUsuarioSeleccionado)){
                     modificarUsuario();
@@ -380,7 +380,7 @@ public class gestionUsuario extends javax.swing.JInternalFrame {
     }
     //Eliminar Usuario
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        if(idUsuarioSeleccionado > -1){
+        if(idUsuarioSeleccionado.length() > 0){
             int respuesta = JOptionPane.showConfirmDialog(null,"¿Estas seguro eliminar este usuario?", "Gestión de Usuario", JOptionPane.WARNING_MESSAGE);
             if(respuesta == JOptionPane.OK_OPTION){ //Eliminar
                 

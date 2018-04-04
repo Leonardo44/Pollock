@@ -5,6 +5,11 @@
  */
 package sv.edu.udb.pollock;
 
+import sv.edu.udb.form.autor.AgregarAutor;
+import sv.edu.udb.form.autor.gestionAutor;
+import sv.edu.udb.form.usuario.AgregarUsuario;
+import sv.edu.udb.form.usuario.gestionUsuario;
+
 /**
  *
  * @author Frank
@@ -46,14 +51,24 @@ public class Pollock extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         fileMenu.setMnemonic('f');
-        fileMenu.setText("File");
+        fileMenu.setText("Autores");
 
         openMenuItem.setMnemonic('o');
-        openMenuItem.setText("Open");
+        openMenuItem.setText("Agregar");
+        openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(openMenuItem);
 
         saveMenuItem.setMnemonic('s');
-        saveMenuItem.setText("Save");
+        saveMenuItem.setText("Gestión");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(saveMenuItem);
 
         saveAsMenuItem.setMnemonic('a');
@@ -73,14 +88,24 @@ public class Pollock extends javax.swing.JFrame {
         menuBar.add(fileMenu);
 
         editMenu.setMnemonic('e');
-        editMenu.setText("Edit");
+        editMenu.setText("Usuarios");
 
         cutMenuItem.setMnemonic('t');
-        cutMenuItem.setText("Cut");
+        cutMenuItem.setText("Agregar");
+        cutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cutMenuItemActionPerformed(evt);
+            }
+        });
         editMenu.add(cutMenuItem);
 
         copyMenuItem.setMnemonic('y');
-        copyMenuItem.setText("Copy");
+        copyMenuItem.setText("Gestión");
+        copyMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyMenuItemActionPerformed(evt);
+            }
+        });
         editMenu.add(copyMenuItem);
 
         pasteMenuItem.setMnemonic('p');
@@ -125,6 +150,34 @@ public class Pollock extends javax.swing.JFrame {
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    //Agregar autor
+    private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
+        AgregarAutor _f = new AgregarAutor();
+        desktopPane.add(_f);
+        _f.setVisible(true);
+    }//GEN-LAST:event_openMenuItemActionPerformed
+
+    //Gestión de autor
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+        gestionAutor _f = new gestionAutor();
+        desktopPane.add(_f);
+        _f.setVisible(true);
+    }//GEN-LAST:event_saveMenuItemActionPerformed
+
+    //Agregar Usuario
+    private void cutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMenuItemActionPerformed
+        AgregarUsuario _f = new AgregarUsuario();
+        desktopPane.add(_f);
+        _f.setVisible(true);
+    }//GEN-LAST:event_cutMenuItemActionPerformed
+
+    //gestión de Usuario
+    private void copyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMenuItemActionPerformed
+        gestionUsuario _f = new gestionUsuario();
+        desktopPane.add(_f);
+        _f.setVisible(true);
+    }//GEN-LAST:event_copyMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
