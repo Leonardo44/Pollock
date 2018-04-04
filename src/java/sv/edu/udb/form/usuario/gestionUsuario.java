@@ -45,12 +45,12 @@ public class gestionUsuario extends javax.swing.JInternalFrame {
     
     private void cargarUsuarios(){
         Object[][] datos = null;
-        String[] columns = {"Nombre", "Apellido", "Fecha de Nacimiento", "Correo", "Username", "estado", "Tipo de Usuario"};
+        String[] columns = {"Nombre", "Apellido", "Fecha de Nacimiento", "Correo", "estado", "Tipo de Usuario"};
         modelo = new DefaultTableModel(datos, columns);
         
         for(Usuario _u : usuarios){
             String estado = (_u.isEstado()) ? "Activo" : "Pasivo";
-            Object[] nuevaLinea = {_u.getNombre(), _u.getApellido(), _u.getFechaNacimiento(), _u.getCorreo(), _u.getUsername(), estado, _u.getTipoUsuario()};
+            Object[] nuevaLinea = {_u.getNombre(), _u.getApellido(), _u.getFechaNacimiento(), _u.getCorreo(), estado, _u.getTipoUsuario()};
             modelo.addRow(nuevaLinea);
         }       
         jtblUsuarios.setModel(modelo);
@@ -315,7 +315,7 @@ public class gestionUsuario extends javax.swing.JInternalFrame {
             int fila = jtblUsuarios.rowAtPoint(evt.getPoint());
             if(fila > -1){
                 idUsuarioSeleccionado = usuarios.get(fila).getIdUsuario(); //Añadimos el id del usuario seleccionado
-                txtNombreUsuario.setText(usuarios.get(fila).getUsername());
+                txtNombreUsuario.setText(usuarios.get(fila).getIdUsuario());
                 txtNombre.setText(usuarios.get(fila).getNombre());
                 txtApellido.setText(usuarios.get(fila).getApellido());
                 txtCorreo.setText(usuarios.get(fila).getCorreo());
@@ -365,10 +365,12 @@ public class gestionUsuario extends javax.swing.JInternalFrame {
             String nombre = txtNombre.getText(), 
                 apellido = txtApellido.getText(),
                 correo = txtCorreo.getText();
+            String idUsuario = String.valueOf(nombre.charAt(0)).toUpperCase() + String.valueOf(apellido.charAt(0)).toUpperCase() + idUsuarioSeleccionado.substring(2); //Nuevo idUsuario
             DateFormat ft = new SimpleDateFormat("yyyy-MM-dd");  
             Date fechaNacimiento = ft.parse(txtFechaNacimiento.getText());
+
             if(compararFecha(fechaNacimiento)){
-                if(Usuario_Model.modificarUsuario(new Usuario(idUsuarioSeleccionado, nombre, apellido, correo, fechaNacimiento, estado))){
+                if(Usuario_Model.modificarUsuario(new Usuario(idUsuario, nombre, apellido, correo, fechaNacimiento, estado), idUsuarioSeleccionado)){
                     JOptionPane.showMessageDialog(null, "Usuario modificado correctamente", "Gestión de Usuario", JOptionPane.INFORMATION_MESSAGE);
                 }else{
                     JOptionPane.showMessageDialog(null, "ha ocurrido un error", "Gestión de Usuario", JOptionPane.ERROR_MESSAGE);

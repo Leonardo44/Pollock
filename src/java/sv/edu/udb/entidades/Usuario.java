@@ -18,7 +18,6 @@ public class Usuario {
     private String apellido;
     private String correo;
     private Date fechaNacimiento;
-    private String username;
     private String password;
     private boolean estado;
     private String tipoUsuario;
@@ -62,15 +61,7 @@ public class Usuario {
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    
     public String getPassword() {
         return password;
     }
@@ -95,13 +86,12 @@ public class Usuario {
         this.tipoUsuario = tipoUsuario;
     }
     
-    public Usuario(String idUsuario, String nombre, String apellido, String correo, Date fechaNacimiento, String username, String password, boolean estado, String tipoUsuario) {
+    public Usuario(String idUsuario, String nombre, String apellido, String correo, Date fechaNacimiento, String password, boolean estado, String tipoUsuario) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.fechaNacimiento = fechaNacimiento;
-        this.username = username;
         this.password = password;
         this.estado = estado;
         this.tipoUsuario = tipoUsuario;
@@ -121,12 +111,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public Usuario(String nombre, String apellido, String correo, Date fechaNacimiento, String username, String password, boolean estado, String tipoUsuario) {
+    public Usuario(String nombre, String apellido, String correo, Date fechaNacimiento, String password, boolean estado, String tipoUsuario) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.fechaNacimiento = fechaNacimiento;
-        this.username = username;
         this.password = password;
         this.estado = estado;
         this.tipoUsuario = tipoUsuario;

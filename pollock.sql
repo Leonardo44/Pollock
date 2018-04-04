@@ -163,12 +163,10 @@ CREATE TABLE `usuario` (
   `apellido` varchar(40) COLLATE utf8_spanish2_ci NOT NULL,
   `correo` varchar(60) COLLATE utf8_spanish2_ci NOT NULL,
   `fechaNacimiento` date NOT NULL,
-  `username` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
   `password` varchar(300) COLLATE utf8_spanish2_ci NOT NULL,
   `estado` tinyint(1) NOT NULL,
   `tipoUsuario` varchar(1) COLLATE utf8_spanish2_ci NOT NULL,
   PRIMARY KEY (`idUsuario`),
-  UNIQUE KEY `U_Usuario_Username` (`username`),
   UNIQUE KEY `U_Usuario_Correo` (`correo`),
   KEY `FK_Usuario_TipoUsuario` (`tipoUsuario`),
   CONSTRAINT `FK_Usuario_TipoUsuario` FOREIGN KEY (`tipoUsuario`) REFERENCES `tipos_usuario` (`idTipoUsuario`) ON DELETE CASCADE

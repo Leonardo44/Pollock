@@ -37,12 +37,12 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
     
     private void cargarUsuarios(){
         Object[][] datos = null;
-        String[] columns = {"Nombre", "Apellido", "Fecha de Nacimiento", "Correo", "Username", "estado", "Tipo de Usuario"};
+        String[] columns = {"Nombre", "Apellido", "Fecha de Nacimiento", "Correo", "estado", "Tipo de Usuario"};
         modelo = new DefaultTableModel(datos, columns);
         
         for(Usuario _u : usuarios){
             String estado = (_u.isEstado()) ? "Activo" : "Pasivo";
-            Object[] nuevaLinea = {_u.getNombre(), _u.getApellido(), _u.getFechaNacimiento(), _u.getCorreo(), _u.getUsername(), estado, _u.getTipoUsuario()};
+            Object[] nuevaLinea = {_u.getNombre(), _u.getApellido(), _u.getFechaNacimiento(), _u.getCorreo(),  estado, _u.getTipoUsuario()};
             modelo.addRow(nuevaLinea);
         }       
         jtblUsuarios.setModel(modelo);
@@ -225,7 +225,7 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
             int fila = jtblUsuarios.rowAtPoint(evt.getPoint());
             if(fila > -1){
                 idUsuarioSeleccionado = usuarios.get(fila).getIdUsuario();
-                txtNombreUsuario.setText(usuarios.get(fila).getUsername());
+                txtNombreUsuario.setText(usuarios.get(fila).getIdUsuario());
             }
         }
     }//GEN-LAST:event_jtblUsuariosMouseClicked
