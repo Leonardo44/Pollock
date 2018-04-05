@@ -42,34 +42,8 @@ CREATE TABLE `autor` (
 
 LOCK TABLES `autor` WRITE;
 /*!40000 ALTER TABLE `autor` DISABLE KEYS */;
+INSERT INTO `autor` VALUES ('A0001','Jackson','Pollock','1956-08-11','USA'),('A0002','Diego','Velásquez','1599-06-05','ESP'),('A0003','Pablo','Picasso','1881-10-25','ESP');
 /*!40000 ALTER TABLE `autor` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `calificacion`
---
-
-DROP TABLE IF EXISTS `calificacion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `calificacion` (
-  `puntaje` int(11) NOT NULL,
-  `idObra` varchar(5) COLLATE utf8_spanish2_ci NOT NULL,
-  `idUsuario` varchar(6) COLLATE utf8_spanish2_ci NOT NULL,
-  UNIQUE KEY `U_Calificacion_idObra` (`idObra`),
-  UNIQUE KEY `U_Calificacion_idUsuario` (`idUsuario`),
-  CONSTRAINT `FK_Calificacion_Obra` FOREIGN KEY (`idObra`) REFERENCES `obra` (`idObra`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_Calificacion_Usuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `calificacion`
---
-
-LOCK TABLES `calificacion` WRITE;
-/*!40000 ALTER TABLE `calificacion` DISABLE KEYS */;
-/*!40000 ALTER TABLE `calificacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -82,9 +56,10 @@ DROP TABLE IF EXISTS `obra`;
 CREATE TABLE `obra` (
   `idObra` varchar(5) COLLATE utf8_spanish2_ci NOT NULL,
   `nombre` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
-  `descripcion` varchar(200) COLLATE utf8_spanish2_ci NOT NULL,
+  `descripcion` varchar(2000) COLLATE utf8_spanish2_ci NOT NULL,
   `imagen` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
-  `idAutor` varchar(6) COLLATE utf8_spanish2_ci NOT NULL,
+  `calificacion` decimal(10,2) DEFAULT '0.00',
+  `idAutor` varchar(5) COLLATE utf8_spanish2_ci NOT NULL,
   PRIMARY KEY (`idObra`),
   UNIQUE KEY `U_Obra_Nombre` (`nombre`),
   KEY `FK_Obra_Autor` (`idAutor`),
@@ -98,6 +73,7 @@ CREATE TABLE `obra` (
 
 LOCK TABLES `obra` WRITE;
 /*!40000 ALTER TABLE `obra` DISABLE KEYS */;
+INSERT INTO `obra` VALUES ('O0001','Postes Azules','En el origen de esta idea se encuentra una revolución moral: en una sociedad que acepta el genocidio, los campos de exterminio y la bomba atómica, no son posibles los actos de creación. La guerra se había convertido en el aspecto culminante de la destrucción sistemática y organizada, en un hacer para destruir dentro de una sociedad que se autodefine como de consumo. Un arte que se consume al disfrutarlo, puede ser arte o no serlo, pero en cualquier caso será totalmente distinto de todo el arte del pasado. Lo Informal es una situación de crisis: se renuncia al lenguaje para reducirlo a puro acto.','O0001.jpg',3.60,'A0001'),('O0002','Las Meninas','El tema central es el retrato de la infanta Margarita de Austria, colocada en primer plano, rodeada por sus sirvientes, \n«las meninas», aunque la pintura representa también otros personajes. En el lado izquierdo se observa parte de un gran lienzo, \ny detrás de este el propio Velázquez se autorretrata trabajando en él. El artista resolvió con gran habilidad todos los problemas \nde composición del espacio, gracias al dominio que tenía del color y a la gran facilidad para caracterizar a los personajes. \nEl punto de fuga de la composición se encuentra cerca del personaje que aparece al fondo abriendo una puerta, donde la colocación \nde un foco de luz demuestra, de nuevo, la maestría del pintor, que consigue hacer recorrer la vista de los espectadores por toda \nsu representación. Un espejo colocado al fondo refleja las imágenes del rey Felipe IV y su esposa Mariana de Austria, medio del \nque se valió el pintor para dar a conocer ingeniosamente lo que estaba pintando, según Palomino, aunque algunos historiadores han \ninterpretado que se trataría del reflejo de los propios reyes entrando a la sesión de pintura o, según otros, posando para ser \nretratados por Velázquez: en este caso, la infanta Margarita y sus acompañantes estarían visitando al pintor en su taller','O0002.jpg',5.00,'A0002'),('O0003','Guernica','En la década de 1940, puesto que en España se había instaurado la dictadura militar del general Franco, Picasso optó por dejar que el cuadro fuese custodiado por el Museo de Arte Moderno de Nueva York, aunque expresó su voluntad de que fuera devuelto a España cuando volviese al país la democracia. En 1981 la obra llegó finalmente a España. Se expuso al público primero en el Casón del Buen Retiro, y luego, desde 1992, en el Museo Reina Sofía de Madrid, donde se encuentra en exhibición permanente.\n\nSu interpretación en profundidad es objeto de controversia, ya que varias figuras son simbólicas y suscitan opiniones dispares; pero su valor artístico está fuera de discusión. No solo es considerado una de las obras más importantes del arte del siglo XX, sino que se ha convertido en un auténtico \"icono del siglo XX\", símbolo de los terribles sufrimientos que la guerra inflige a los seres humanos.','O0003.jpg',0.00,'A0003');
 /*!40000 ALTER TABLE `obra` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,4 +167,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-03 20:21:42
+-- Dump completed on 2018-04-04 23:54:03
