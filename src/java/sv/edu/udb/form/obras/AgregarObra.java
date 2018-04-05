@@ -75,6 +75,7 @@ public class AgregarObra extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDescripcion = new javax.swing.JTextArea();
 
+        setClosable(true);
         setTitle("Registrar Obras");
 
         lblDescripcion.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N

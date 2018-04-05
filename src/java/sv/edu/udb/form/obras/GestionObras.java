@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sv.edu.udb.entidades.Autor;
 import sv.edu.udb.entidades.Obra;
@@ -33,7 +34,7 @@ public class GestionObras extends javax.swing.JInternalFrame {
     private DefaultTableModel modelo = null;
     private List<Autor> autores = new ArrayList<Autor>();
     private List<Obra> obras = new ArrayList<Obra>();
-    private String idUsuarioSeleccionado = "";
+    private String idObraSeleccionada = "";
     private List<Autor> autorBusqueda = new ArrayList<Autor>();
     /**
      * Creates new form GestionObras
@@ -127,6 +128,7 @@ public class GestionObras extends javax.swing.JInternalFrame {
         lblFiltro = new javax.swing.JLabel();
         cmbBuscador = new javax.swing.JComboBox<>();
 
+        setClosable(true);
         setTitle("Gestión de Obras");
 
         jTblObras.setModel(new javax.swing.table.DefaultTableModel(
@@ -140,6 +142,11 @@ public class GestionObras extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTblObras.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTblObrasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTblObras);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -187,9 +194,19 @@ public class GestionObras extends javax.swing.JInternalFrame {
 
         btnModificar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -334,6 +351,82 @@ public class GestionObras extends javax.swing.JInternalFrame {
         }
         cargarObras();
     }//GEN-LAST:event_txtBusquedaKeyReleased
+
+    private void jTblObrasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblObrasMouseClicked
+        if(obras.size() > 0){
+            int fila = jTblObras.rowAtPoint(evt.getPoint());
+            if(fila > -1){
+                idObraSeleccionada = obras.get(fila).getIdObra();
+                txtNombre.setText(obras.get(fila).getNombre());
+                txtDescripcion.setText(obras.get(fila).getDescripcion());
+                txtUrlImagen.setText(obras.get(fila).getImagen());
+                for(Autor _a: autores){
+                    if(String.valueOf(_a.getIdAutor()).equals(obras.get(fila).getAutor().getIdAutor())){
+                        cmbAutores.removeAllItems(); //Remover Items
+                        cmbAutores.addItem(_a.getNombres() +" "+ _a.getApellidos());
+                        cmbAutores.setEnabled(false);
+                    }
+                }
+                desbloquearCampos();
+            }
+        }
+    }//GEN-LAST:event_jTblObrasMouseClicked
+    private void modificarObra(){
+            try{
+                String nombre = txtNombre.getText();
+                String descripcion = txtDescripcion.getText();
+                String idAutor = "";
+                Autor objectAutor = null;
+                String img = "";
+                for(Autor _a: autores){
+                   if((_a.getNombres() +" "+ _a.getApellidos()).equals(cmbAutores.getSelectedItem().toString())){
+                       idAutor = String.valueOf(_a.getIdAutor());
+                       objectAutor = _a;
+                       break;
+                   }
+               }
+               if(txtUrlImagen.getText().equals(idObraSeleccionada + ".jpg")){
+               img = txtUrlImagen.getText();
+                    if(Obra_Model.modificar(new Obra(idObraSeleccionada,nombre,descripcion,img,objectAutor))){
+                        JOptionPane.showMessageDialog(null, "Obra modificada correctamente", "Gestión de Obras", JOptionPane.INFORMATION_MESSAGE);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "ha ocurrido un error", "Gestión de Obras", JOptionPane.ERROR_MESSAGE);
+                    }
+               }else if(!(txtUrlImagen.getText().equals(idObraSeleccionada + ".jpg"))){
+                   String urlImg = txtUrlImagen.getText();
+                   String idObra = idObraSeleccionada;
+                   String archivoDestino = idObra + ".jpg";
+                   saveImage(urlImg,archivoDestino);
+                   mover(archivoDestino);
+               }else{
+                   JOptionPane.showMessageDialog(null,"Ocurrio un error con la URL, porfavor ingrese una URL de una IMG o el nombre del archivo original","Gestión de Obras",JOptionPane.ERROR_MESSAGE);
+               }
+            }catch(Exception ex){
+                Logger.getLogger(GestionObras.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        if(idObraSeleccionada.length() > 0){
+            if(validarDatos() && verificarVacios()){
+                modificarObra();
+                inicializarComponentes();
+                cargarObras();
+            }else{
+                JOptionPane.showMessageDialog(null,"Ha ocurrido un error al modificar la obra","Gestión de Obras",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEliminarActionPerformed
+    private void desbloquearCampos(){
+        txtNombre.setEnabled(true);
+        txtDescripcion.setEnabled(true);
+        txtUrlImagen.setEnabled(true);
+        btnModificar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+    }
     private boolean verificarVacios(){
         if((txtNombre.getText().length() > 0) && !(txtNombre.getText().equals("")) && !(txtNombre.getText().isEmpty())){
            if((txtDescripcion.getText().length() > 0) && !(txtDescripcion.getText().equals("")) && !(txtDescripcion.getText().isEmpty())){
