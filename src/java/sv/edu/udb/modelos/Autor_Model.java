@@ -53,7 +53,7 @@ public class Autor_Model {
     public static List<Autor> obtenerAutores(String filtros) {
         List<Autor> _aList = new ArrayList();
         try {
-            try (ResultSet data = DBConection.getData("SELECT * FROM Autor " + filtros + " ;")) {
+            try (ResultSet data = DBConection.getData("SELECT A.idAutor, A.nombres, A.apellidos, A.fechaNac, P.nombre FROM autor A INNER JOIN Pais P ON A.idPais = P.idPais " + filtros + " ;")) {
                 while (data.next()) {
                     Date date = null;
                     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -131,7 +131,7 @@ public class Autor_Model {
 
             modificarSQL.setString(1, _a.getNombres());
             modificarSQL.setString(2, _a.getApellidos());
-            modificarSQL.setString(3, _a.getFechaNac().toString());
+            modificarSQL.setDate(3, new java.sql.Date(_a.getFechaNac().getTime()));
             modificarSQL.setString(4, _a.getPais());
             modificarSQL.setString(5, _a.getIdAutor());
             modificarSQL.executeUpdate();
@@ -165,6 +165,29 @@ public class Autor_Model {
         } catch (SQLException ex) {
             Logger.getLogger(Usuario_Model.class.getName()).log(Level.SEVERE, null, ex);
             return -1;
+        }
+    }
+    
+    public static List<Autor> obtenerAutoresGestion() { //Auotres con su pais
+        List<Autor> _aList = new ArrayList();
+        try {
+            try (ResultSet data = DBConection.getData("SELECT A.idAutor, A.nombres, A.apellidos, A.fechaNac, P.nombre FROM autor A INNER JOIN Pais P ON A.idPais = P.idPais;")) {
+                while (data.next()) {
+                    Date date = null;
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+                    try {
+                        date = df.parse(data.getString("A.fechaNac"));
+                    } catch (ParseException ex) {
+                        Logger.getLogger(Autor_Model.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    _aList.add(new Autor(data.getString(1), data.getString(2), data.getString(3), date, data.getString(5), Obra_Model.obtenerObrasAutor(data.getString(1))));
+                }
+            }
+            return _aList;
+        } catch (SQLException ex) {
+            Logger.getLogger(Autor_Model.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
     }
 }

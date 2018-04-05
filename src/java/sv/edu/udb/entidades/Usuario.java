@@ -13,21 +13,20 @@ import java.util.Random;
  * @author Frank
  */
 public class Usuario {
-    private int idUsuario;
+    private String idUsuario;
     private String nombre;
     private String apellido;
     private String correo;
     private Date fechaNacimiento;
-    private String username;
     private String password;
     private boolean estado;
     private String tipoUsuario;
 
-    public int getIdUsuario() {
+    public String getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -62,15 +61,7 @@ public class Usuario {
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    
     public String getPassword() {
         return password;
     }
@@ -95,19 +86,18 @@ public class Usuario {
         this.tipoUsuario = tipoUsuario;
     }
     
-    public Usuario(int idUsuario, String nombre, String apellido, String correo, Date fechaNacimiento, String username, String password, boolean estado, String tipoUsuario) {
+    public Usuario(String idUsuario, String nombre, String apellido, String correo, Date fechaNacimiento, String password, boolean estado, String tipoUsuario) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.fechaNacimiento = fechaNacimiento;
-        this.username = username;
         this.password = password;
         this.estado = estado;
         this.tipoUsuario = tipoUsuario;
     }
 
-    public Usuario(int idUsuario, String nombre, String apellido, String correo, Date fechaNacimiento, boolean estado) {
+    public Usuario(String idUsuario, String nombre, String apellido, String correo, Date fechaNacimiento, boolean estado) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -116,17 +106,16 @@ public class Usuario {
         this.estado = estado;
     }
 
-    public Usuario(int idUsuario, String password) {
+    public Usuario(String idUsuario, String password) {
         this.idUsuario = idUsuario;
         this.password = password;
     }
 
-    public Usuario(String nombre, String apellido, String correo, Date fechaNacimiento, String username, String password, boolean estado, String tipoUsuario) {
+    public Usuario(String nombre, String apellido, String correo, Date fechaNacimiento, String password, boolean estado, String tipoUsuario) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.fechaNacimiento = fechaNacimiento;
-        this.username = username;
         this.password = password;
         this.estado = estado;
         this.tipoUsuario = tipoUsuario;
@@ -145,6 +134,20 @@ public class Usuario {
     
     public static String crearNombreUsuario(String tipoUsuario, int numUsuario){
         String nombreUsuario = tipoUsuario;
+        if(numUsuario < 10){
+            nombreUsuario += "000"+(numUsuario+=1);
+        }else if(numUsuario >= 10 && numUsuario < 100){
+            nombreUsuario += "00"+(numUsuario+=1);
+        }else if(numUsuario >= 100 && numUsuario < 1000){
+            nombreUsuario += "0"+(numUsuario+=1);
+        }else if(numUsuario >= 1000){
+            nombreUsuario += (numUsuario+=1);
+        }
+        return nombreUsuario;
+    }
+    
+    public static String crearIdUsuario(String nombre, String apellido, int numUsuario){
+        String nombreUsuario = String.valueOf(nombre.charAt(0)).toUpperCase() + String.valueOf(apellido.charAt(0)).toUpperCase();
         if(numUsuario < 10){
             nombreUsuario += "000"+(numUsuario+=1);
         }else if(numUsuario >= 10 && numUsuario < 100){

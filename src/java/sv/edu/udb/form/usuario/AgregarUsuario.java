@@ -150,19 +150,21 @@ public class AgregarUsuario extends javax.swing.JInternalFrame {
                         break;
                     }
                 }
-
+                
+                int numUsuario = Usuario_Model.obtenerNumUsuario(tipo);
                 String password = Encriptar.encriptar(Usuario.crearContransenna());
-                String username = Usuario.crearNombreUsuario(tipo, Usuario_Model.obtenerNumUsuario(tipo));
                 String nombre = txtNombre.getText(), 
                     apellido = txtApellido.getText(),
                     correo = txtCorreo.getText(),
                     tipoUsuario = cmbTipoUsuario.getSelectedItem().toString();
+                String idUsuario = Usuario.crearIdUsuario(nombre, apellido, numUsuario);
+                
                 DateFormat ft = new SimpleDateFormat("yyyy-MM-dd");  
                 Date fechaNacimiento = ft.parse(txtFechaNacimiento.getText());
                 //Este es el de Leo :v
                 if(compararFecha(fechaNacimiento)){//Comparamos que la fehca ingresada no sea mayor a la actual
                     if(Usuario_Model.verificarCorreo(correo)){
-                        if(Usuario_Model.insertar(new Usuario(nombre, apellido, correo, fechaNacimiento, username, password, true, tipo))){
+                        if(Usuario_Model.insertar(new Usuario(idUsuario, nombre, apellido, correo, fechaNacimiento, password, true, tipo))){
                             JOptionPane.showMessageDialog(null, "Usuario registrado correctamente", "Registro de Usuario", JOptionPane.INFORMATION_MESSAGE);
                         }else{
                             JOptionPane.showMessageDialog(null, "ha ocurrido un error", "Registro de Usuario", JOptionPane.ERROR_MESSAGE);

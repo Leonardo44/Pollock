@@ -23,7 +23,7 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
     private DefaultTableModel modelo = null;
     private List<Usuario> usuarios = new ArrayList<Usuario>();
     private List<TipoUsuario> tipos = new ArrayList<TipoUsuario>();
-    private int idUsuarioSeleccionado;
+    private String idUsuarioSeleccionado;
     
     /**
      * Creates new form cambiarContrasenna
@@ -37,12 +37,12 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
     
     private void cargarUsuarios(){
         Object[][] datos = null;
-        String[] columns = {"Nombre", "Apellido", "Fecha de Nacimiento", "Correo", "Username", "estado", "Tipo de Usuario"};
+        String[] columns = {"Nombre", "Apellido", "Fecha de Nacimiento", "Correo", "estado", "Tipo de Usuario"};
         modelo = new DefaultTableModel(datos, columns);
         
         for(Usuario _u : usuarios){
             String estado = (_u.isEstado()) ? "Activo" : "Pasivo";
-            Object[] nuevaLinea = {_u.getNombre(), _u.getApellido(), _u.getFechaNacimiento(), _u.getCorreo(), _u.getUsername(), estado, _u.getTipoUsuario()};
+            Object[] nuevaLinea = {_u.getNombre(), _u.getApellido(), _u.getFechaNacimiento(), _u.getCorreo(),  estado, _u.getTipoUsuario()};
             modelo.addRow(nuevaLinea);
         }       
         jtblUsuarios.setModel(modelo);
@@ -50,7 +50,7 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
     
     private void inicializarComponentes(){
         txtNombreUsuario.setText("");
-        idUsuarioSeleccionado = -1;
+        idUsuarioSeleccionado = "";
         txtContrasenna.setText("");
         
         usuarios = Usuario_Model.obtenerUsuarios(); //Cargamos TODOS los usuarios
@@ -205,7 +205,7 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtBuscarKeyReleased
 
     private void btnProcesarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarActionPerformed
-        if(idUsuarioSeleccionado > -1){
+        if(idUsuarioSeleccionado.length() > 0){
             if(validarCampos()){
                 if(Usuario_Model.modificarContrasenna(new Usuario(idUsuarioSeleccionado, Encriptar.encriptar(txtContrasenna.getText())))){
                     JOptionPane.showMessageDialog(null, "Contraseña modificada!", "Cambiar Contraseña", JOptionPane.INFORMATION_MESSAGE);
@@ -224,8 +224,8 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
         if(usuarios.size() > 0){
             int fila = jtblUsuarios.rowAtPoint(evt.getPoint());
             if(fila > -1){
-                idUsuarioSeleccionado = fila;
-                txtNombreUsuario.setText(usuarios.get(fila).getUsername());
+                idUsuarioSeleccionado = usuarios.get(fila).getIdUsuario();
+                txtNombreUsuario.setText(usuarios.get(fila).getIdUsuario());
             }
         }
     }//GEN-LAST:event_jtblUsuariosMouseClicked

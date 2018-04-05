@@ -185,4 +185,25 @@ public class Obra_Model {
             return false;
         }
     }
+    
+    public static List<Obra> obtenerObrasAutor(String id){ //Obtiene las obras de un autor
+        List<Obra> _oList = new ArrayList();
+        PreparedStatement obtenerLibro = DBConection.getStatement("SELECT idObra FROM Obra WHERE idAutor = ?;");
+        try {
+            obtenerLibro.setString(1, id);
+            try (ResultSet data = obtenerLibro.executeQuery()) {
+                if(data != null){
+                    while (data.next()) {
+                        _oList.add(new Obra(data.getString(1)));
+                    }
+                }else{
+                    return null;
+                }
+            }
+            return _oList;
+        } catch (SQLException ex) {    
+            Logger.getLogger(Obra_Model.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 }
