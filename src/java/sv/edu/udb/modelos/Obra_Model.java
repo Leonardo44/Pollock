@@ -205,7 +205,29 @@ public class Obra_Model {
             return false;
         }
     }
-    
+    public static List<Obra> BuscarObras(String campo,String busqueda){
+        List<Obra> _Olist = new ArrayList();
+        List<Autor> _AList = new ArrayList();
+        PreparedStatement consultaSQL = DBConection.getStatement("SELECT idObra,nombre,descripcion,imagen,calificacion,idAutor FROM obra WHERE "+ campo +" LIKE '%"+busqueda +"%'");
+        try{
+            ResultSet data = consultaSQL.executeQuery();
+            while(data.next()){
+                String idAutor = data.getString("idAutor");
+                _AList = obtenerAutores();
+                for(Autor _a: _AList){
+                    if(_a.getIdAutor().equals(idAutor)){
+                        Autor autorObra = new Autor(_a.getIdAutor(),_a.getNombres(),_a.getApellidos());
+                        _Olist.add(new Obra(data.getString("idObra"),data.getString("nombre"),data.getString("descripcion"),data.getString("imagen"),autorObra));
+                    }
+                }
+            }
+            data.close();
+            return _Olist;
+        }catch(SQLException ex){
+            Logger.getLogger(Obra_Model.class.getName()).log(Level.SEVERE,null, ex);
+            return null;
+        }
+    }
     public static List<Obra> obtenerObrasAutor(String id){ //Obtiene las obras de un autor
         List<Obra> _oList = new ArrayList();
         PreparedStatement obtenerLibro = DBConection.getStatement("SELECT idObra FROM Obra WHERE idAutor = ?;");
