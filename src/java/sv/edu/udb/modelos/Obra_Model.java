@@ -176,16 +176,15 @@ public class Obra_Model {
     
     public static boolean modificar(Obra _o){
         try {
-            PreparedStatement modificarSQL = DBConection.getStatement("UPDATE Obra SET nombre = ?, descripcion = ?, imagen = ?, calificacion = ?, idAutor = ? WHERE idObra = ?;");
+            PreparedStatement modificarSQL = DBConection.getStatement("UPDATE Obra SET nombre = ?, descripcion = ?, imagen = ?, idAutor = ? WHERE idObra = ?;");
             
-            modificarSQL.setString(6, _o.getIdObra());
+            modificarSQL.setString(5, _o.getIdObra());
             modificarSQL.setString(1, _o.getNombre());
             modificarSQL.setString(2, _o.getDescripcion());
             modificarSQL.setString(3, _o.getImagen());
-            modificarSQL.setFloat(4, _o.getCalificacion());
-            modificarSQL.setString(5, _o.getAutor().getIdAutor());
+            /*modificarSQL.setFloat(4, _o.getCalificacion());*/
+            modificarSQL.setString(4, _o.getAutor().getIdAutor());
             modificarSQL.executeUpdate();
-            
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(Obra_Model.class.getName()).log(Level.SEVERE, null, ex);

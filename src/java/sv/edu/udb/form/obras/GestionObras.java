@@ -5,6 +5,7 @@
  */
 package sv.edu.udb.form.obras;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -389,15 +390,16 @@ public class GestionObras extends javax.swing.JInternalFrame {
                img = txtUrlImagen.getText();
                     if(Obra_Model.modificar(new Obra(idObraSeleccionada,nombre,descripcion,img,objectAutor))){
                         JOptionPane.showMessageDialog(null, "Obra modificada correctamente", "Gestión de Obras", JOptionPane.INFORMATION_MESSAGE);
-                    }else{
-                        JOptionPane.showMessageDialog(null, "ha ocurrido un error", "Gestión de Obras", JOptionPane.ERROR_MESSAGE);
                     }
                }else if(!(txtUrlImagen.getText().equals(idObraSeleccionada + ".jpg"))){
                    String urlImg = txtUrlImagen.getText();
                    String idObra = idObraSeleccionada;
                    String archivoDestino = idObra + ".jpg";
-                   saveImage(urlImg,archivoDestino);
-                   mover(archivoDestino);
+                   if(Obra_Model.modificar(new Obra(idObraSeleccionada,nombre,descripcion,archivoDestino,objectAutor))){
+                        JOptionPane.showMessageDialog(null, "Obra modificada correctamente", "Gestión de Obras", JOptionPane.INFORMATION_MESSAGE);
+                        saveImage(urlImg,archivoDestino);
+                        mover(archivoDestino);
+                   }
                }else{
                    JOptionPane.showMessageDialog(null,"Ocurrio un error con la URL, porfavor ingrese una URL de una IMG o el nombre del archivo original","Gestión de Obras",JOptionPane.ERROR_MESSAGE);
                }
@@ -411,14 +413,45 @@ public class GestionObras extends javax.swing.JInternalFrame {
                 modificarObra();
                 inicializarComponentes();
                 cargarObras();
+                obras = Obra_Model.obtenerObras();
+                txtBusqueda.setText("");
             }else{
                 JOptionPane.showMessageDialog(null,"Ha ocurrido un error al modificar la obra","Gestión de Obras",JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnModificarActionPerformed
-
+    private void eliminarImg(File fichero){
+        if (!fichero.exists()) {
+        System.out.println("El archivo data no existe.");
+    } else {
+        fichero.delete();
+        System.out.println("El archivo data fue eliminado.");
+    }
+    }
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        if(idObraSeleccionada.length() > 0){
+            int respuesta = JOptionPane.showConfirmDialog(null,"¿Estas seguro de eliminar esta obra?", "Gestión de Obras", JOptionPane.WARNING_MESSAGE);
+            if(respuesta == JOptionPane.OK_OPTION){
+                if(Obra_Model.eliminar(new Obra(idObraSeleccionada))){
+                    String archivoDestino = idObraSeleccionada + ".jpg";
+                    String savePath = System.getProperty("user.dir") + "^web^images^obras";
+                    savePath = String.join(System.getProperty("file.separator"), savePath.split("\\^"));
+                    Path destinoPath = Paths.get(savePath +"\\"+ archivoDestino);
+                    String ruta = String.valueOf(destinoPath);
+                    File fichero = new File(ruta);
+                    eliminarImg(fichero);
+                    inicializarComponentes();
+                    cargarObras();
+                    txtBusqueda.setText("");
+                    obras = Obra_Model.obtenerObras();
+                    JOptionPane.showMessageDialog(null, "Usuario elimnado correctamente", "Gestión de Usuario", JOptionPane.INFORMATION_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Error en el proceso de eliminación", "Gestión de Usuario", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Selecciona una obra", "Gestión de Obras", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
     private void desbloquearCampos(){
         txtNombre.setEnabled(true);
@@ -444,8 +477,8 @@ public class GestionObras extends javax.swing.JInternalFrame {
     }
     private boolean validarDatos() {
         if(Validacion.validar("^[A-Z][A-Za-z ñ.]+$",txtNombre.getText() , "Porfavor, revise el nombre de la obra", "Agregar Obras")
-                && Validacion.validar("^[A-Za-z ñ,.)'(-]+$",txtDescripcion.getText(),"Alguno caracteres no estan permitidos en la descripción","Agregar Obras")){
-                if(Validacion.validar("^([A-Za-z .'/_:#?0-9-])+$", txtUrlImagen.getText(), "Ingrese una URL correcta", "Agregar Obras") || Validacion.validar("^O[0-9][0-9][0-9][0-9].jpg+$", txtUrlImagen.getText(), "Ingrese un formato de imagen correcto", "Agregar Obras")){
+                && Validacion.validar("^[A-Za-z ñ,.)'0-9ñáéíóú:(-]+$",txtDescripcion.getText(),"Alguno caracteres no estan permitidos en la descripción","Agregar Obras")){
+                if(Validacion.validar("^[A-Za-z .'/_:#?0-9-+]+$", txtUrlImagen.getText(), "Ingrese una URL correcta", "Agregar Obras") || Validacion.validar("^O[0-9][0-9][0-9][0-9].jpg+$", txtUrlImagen.getText(), "Ingrese un formato de imagen correcto", "Agregar Obras")){
                     return true;
                 }else{
                  return false;

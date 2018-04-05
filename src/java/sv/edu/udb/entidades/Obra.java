@@ -74,7 +74,9 @@ public class Obra {
         this.imagen = imagen;
         this.autor = autor;
     }
-
+    public Obra(String idObra){
+        this.idObra = idObra;
+    }
     public Obra(String idObra, boolean relaciones) {
         this.idObra = idObra;
         Obra _o = Obra_Model.obtenerObra(idObra, relaciones);

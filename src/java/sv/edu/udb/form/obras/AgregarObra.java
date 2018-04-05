@@ -35,13 +35,10 @@ public class AgregarObra extends javax.swing.JInternalFrame {
      */
     public AgregarObra() {
         initComponents();
+        iniciarComponentes();
         cargarAutores();
     }
     public void iniciarComponentes(){
-        txtNombre = new javax.swing.JTextField();
-        txtDescripcion = new javax.swing.JTextArea();
-        txtUrlImagen = new javax.swing.JTextField();
-        cmbAutores = new javax.swing.JComboBox<>();
         cargarAutores();
         txtNombre.setText("");
         txtDescripcion.setText("");
@@ -51,7 +48,7 @@ public class AgregarObra extends javax.swing.JInternalFrame {
         cmbAutores.removeAllItems(); //Remover Items
         autor = Obra_Model.obtenerAutores();
         for(Autor _a : autor){
-            cmbAutores.addItem(_a.getNombres());
+            cmbAutores.addItem(_a.getNombres() + " "+ _a.getApellidos());
         }
     }
     /**
@@ -183,8 +180,8 @@ public class AgregarObra extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
     private boolean validarDatos() {
         if(Validacion.validar("^[A-Z][A-Za-z ñ.]+$",txtNombre.getText() , "Porfavor, revise el nombre de la obra", "Agregar Obras")
-                && Validacion.validar("^[A-Za-z ñ,.)'(-]+$",txtDescripcion.getText(),"Alguno caracteres no estan permitidos en la descripción","Agregar Obras")
-                && Validacion.validar("^([A-Za-z .'/_:#?0-9-])+$", txtUrlImagen.getText(), "Ingrese una URL correcta", "Agregar Obras")){
+                && Validacion.validar("^[A-Za-z ñ,.)'0-9ñáéíóú:(-]+$",txtDescripcion.getText(),"Alguno caracteres no estan permitidos en la descripción","Agregar Obras")
+                && Validacion.validar("^[A-Za-z .'/_:#?0-9-+]+$", txtUrlImagen.getText(), "Ingrese una URL correcta", "Agregar Obras")){
         return true;
         }else{
          return false;
@@ -236,7 +233,7 @@ public class AgregarObra extends javax.swing.JInternalFrame {
                String idAutor = "";
                Autor objectAutor = null;
                for(Autor _a: autor){
-                   if(_a.getNombres().equals(cmbAutores.getSelectedItem().toString())){
+                   if((_a.getNombres() + " "+ _a.getApellidos()).equals(cmbAutores.getSelectedItem().toString())){
                        idAutor = String.valueOf(_a.getIdAutor());
                        objectAutor = _a;
                        break;
