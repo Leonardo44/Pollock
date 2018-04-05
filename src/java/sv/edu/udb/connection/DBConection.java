@@ -20,7 +20,7 @@ public class DBConection {
     private static final String HOST = "127.0.0.1";
     private static final String BD = "pollock";
     private static final String USER = "root";
-    private static final String PASS = "";
+    private static final String PASS = "20150126";
     private static Connection cn;
     private static ResultSet rs;
     private static Statement s;

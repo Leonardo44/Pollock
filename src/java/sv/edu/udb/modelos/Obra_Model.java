@@ -8,7 +8,11 @@ package sv.edu.udb.modelos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,9 +56,9 @@ public class Obra_Model {
     
     public static List<Obra> obtenerObras(){
         List<Obra> _oList = new ArrayList();
-        PreparedStatement insertarLibro = DBConection.getStatement("SELECT * FROM Libro;");
+        PreparedStatement obtenerLibros = DBConection.getStatement("SELECT * FROM Obra;");
         try {
-            try (ResultSet data = insertarLibro.executeQuery()) {
+            try (ResultSet data = obtenerLibros.executeQuery()) {
                 if(data != null){
                     while (data.next()) {
                         _oList.add(new Obra(data.getString(1), data.getString(2), data.getString(3), data.getString(4), new Autor(data.getString(5), false)));
@@ -70,8 +74,8 @@ public class Obra_Model {
         }
     }
     
-    public static Obra obtenerObra(String id){
-        PreparedStatement obtenerLibro = DBConection.getStatement("SELECT * FROM Libro WHERE idLibro = ?;");
+    public static Obra obtenerObra(String id, boolean relaciones){
+        PreparedStatement obtenerLibro = DBConection.getStatement("SELECT * FROM Obra WHERE idObra = ?;");
         try {
             obtenerLibro.setString(1, id);
             try (ResultSet dataLibro = obtenerLibro.executeQuery()) {
@@ -85,8 +89,44 @@ public class Obra_Model {
                             new Autor(dataLibro.getString(5), false)
                     );
                     
+                    if(relaciones){
+                        PreparedStatement obtenerAutor = DBConection.getStatement("SELECT a.idAutor, a.nombres, a.apellidos, a.fechaNac, a.idPais FROM autor a INNER JOIN obra o ON o.idAutor = a.idAutor WHERE o.idObra = ?;");
+                        PreparedStatement obtenerCalificacion = DBConection.getStatement("SELECT calificacion FROM Obra WHERE idObra= ?;");
+                        
+                        obtenerAutor.setString(1, _l.getIdObra());
+                        obtenerCalificacion.setString(1, _l.getIdObra());
+                        
+                        ResultSet DataA = obtenerAutor.executeQuery();
+                        ResultSet DataC = obtenerCalificacion.executeQuery();
+                        
+                        Autor _a = null;
+                        float _c = 0;
+                        
+                        Date date;
+                        DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                        
+                        if(DataA != null){
+                            while (DataA.next()) {
+                                date = df.parse(DataA.getString(4));
+                                _a = new Autor(DataA.getString(1), DataA.getString(2), DataA.getString(3), date);
+                            }
+                        }
+                        
+                        if(DataC != null){
+                            while (DataC.next()) {
+                                _c += DataC.getFloat(1);
+                            }
+                        }
+                        
+                        _l.setAutor(_a);
+                        _l.setCalificacion(_c);
+                    }
+                    
                     return _l;
                 }
+            } catch (ParseException ex) {
+                Logger.getLogger(Obra_Model.class.getName()).log(Level.SEVERE, null, ex);
+                return null;
             }
             return null;
         } catch (SQLException ex) {    
@@ -96,7 +136,7 @@ public class Obra_Model {
     }
     
     public static boolean insertar(Obra _o){
-        PreparedStatement insertarSQL = DBConection.getStatement("INSERT INTO Obra VALUES(?, ?, ?, ?, ?);");
+        PreparedStatement insertarSQL = DBConection.getStatement("INSERT INTO Obra(idObra, nombre, descripcion, imagen, idAutor) VALUES(?, ?, ?, ?, ?);");
         try {
             String _id = nuevoId();
             _o.setIdObra(_id);
@@ -104,7 +144,7 @@ public class Obra_Model {
             insertarSQL.setString(2, _o.getNombre());
             insertarSQL.setString(3, _o.getDescripcion());
             insertarSQL.setString(4, _o.getImagen());
-            insertarSQL.setString(5, _o.getAutor().getIdAutor());
+            insertarSQL.setString(4, _o.getAutor().getIdAutor());
 
             insertarSQL.executeUpdate();
             return true;
@@ -116,12 +156,13 @@ public class Obra_Model {
     
     public static boolean modificar(Obra _o){
         try {
-            PreparedStatement modificarSQL = DBConection.getStatement("UPDATE Obra SET nombre = ?, descripcion = ?, imagen = ?, idAutor = ? WHERE idObra = ?;");
+            PreparedStatement modificarSQL = DBConection.getStatement("UPDATE Obra SET nombre = ?, descripcion = ?, imagen = ?, calificacion = ?, idAutor = ? WHERE idObra = ?;");
             
-            modificarSQL.setString(1, _o.getIdObra());
-            modificarSQL.setString(2, _o.getNombre());
-            modificarSQL.setString(3, _o.getDescripcion());
-            modificarSQL.setString(4, _o.getImagen());
+            modificarSQL.setString(6, _o.getIdObra());
+            modificarSQL.setString(1, _o.getNombre());
+            modificarSQL.setString(2, _o.getDescripcion());
+            modificarSQL.setString(3, _o.getImagen());
+            modificarSQL.setFloat(4, _o.getCalificacion());
             modificarSQL.setString(5, _o.getAutor().getIdAutor());
             modificarSQL.executeUpdate();
             

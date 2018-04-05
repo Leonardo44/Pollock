@@ -5,6 +5,8 @@
  */
 package sv.edu.udb.entidades;
 
+import sv.edu.udb.modelos.Obra_Model;
+
 /**
  *
  * @author Frank
@@ -15,7 +17,8 @@ public class Obra {
     private String descripcion;
     private String imagen;
     private Autor autor;
-
+    private float calificacion;
+    
     public String getIdObra() {
         return idObra;
     }
@@ -55,6 +58,14 @@ public class Obra {
     public void setAutor(Autor autor) {
         this.autor = autor;
     }
+    
+    public float getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(float calificacion) {
+        this.calificacion = calificacion;
+    }
 
     public Obra(String idObra, String nombre, String descripcion, String imagen, Autor autor) {
         this.idObra = idObra;
@@ -64,7 +75,30 @@ public class Obra {
         this.autor = autor;
     }
 
-    public Obra(String idObra) {
+    public Obra(String idObra, boolean relaciones) {
         this.idObra = idObra;
+        Obra _o = Obra_Model.obtenerObra(idObra, relaciones);
+        if(_o != null){
+            this.idObra = _o.idObra;
+            this.nombre = _o.nombre;
+            this.descripcion = _o.descripcion;
+            this.imagen = _o.imagen;
+            this.autor = _o.autor;
+            this.calificacion = _o.calificacion;
+        }else{
+            this.idObra = null;
+        }
+    }
+    
+    public void cargarDatos(boolean relaciones){
+       Obra _o = Obra_Model.obtenerObra(this.idObra, relaciones);
+        if(_o != null){
+            this.idObra = _o.idObra;
+            this.nombre = _o.nombre;
+            this.descripcion = _o.descripcion;
+            this.imagen = _o.imagen;
+            this.autor = _o.autor;
+            this.calificacion = _o.calificacion;
+        } 
     }
 }
