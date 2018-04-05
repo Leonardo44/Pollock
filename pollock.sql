@@ -83,7 +83,7 @@ CREATE TABLE `obra` (
   `idObra` varchar(5) COLLATE utf8_spanish2_ci NOT NULL,
   `nombre` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
   `descripcion` varchar(200) COLLATE utf8_spanish2_ci NOT NULL,
-  `imagen` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
+  `imagen` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
   `idAutor` varchar(6) COLLATE utf8_spanish2_ci NOT NULL,
   PRIMARY KEY (`idObra`),
   UNIQUE KEY `U_Obra_Nombre` (`nombre`),

@@ -8,7 +8,11 @@ package sv.edu.udb.modelos;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,13 +35,13 @@ public class Obra_Model {
                     _c = Integer.parseInt(_r.getString("newId")) + 1;
                     
                     if (_c < 10) {
-                        _id = "L000" + _c;
+                        _id = "O000" + _c;
                     } else if (_c >= 10 && _c < 100) {
-                        _id = "L00" + _c;
+                        _id = "O00" + _c;
                     } else if (_c >= 100 && _c < 1000) {
-                        _id = "L0" + _c;
+                        _id = "O0" + _c;
                     } else {
-                        _id = "L" + _c;
+                        _id = "O" + _c;
                     }
                 }else{
                     _id = "O0001";
@@ -49,7 +53,27 @@ public class Obra_Model {
             return null;
         }
     }
-    
+    public static List<Autor> obtenerAutores(){
+        List<Autor> _Alist = new ArrayList();
+        PreparedStatement consultaSQL = DBConection.getStatement("SELECT * FROM autor");
+        try{
+            ResultSet data = consultaSQL.executeQuery();
+            while(data.next()){
+                 Date date = null;
+                 DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                 try {
+                        date = df.parse(data.getString(4));
+                    } catch (ParseException ex) {
+                        Logger.getLogger(Obra_Model.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                _Alist.add(new Autor(data.getString(1), data.getString(2), data.getString(3), date));
+                }
+            return _Alist;
+        }catch(SQLException ex){
+            Logger.getLogger(Obra_Model.class.getName()).log(Level.SEVERE,null,ex);
+            return null;
+        }
+    }
     public static List<Obra> obtenerObras(){
         List<Obra> _oList = new ArrayList();
         PreparedStatement insertarLibro = DBConection.getStatement("SELECT * FROM Libro;");

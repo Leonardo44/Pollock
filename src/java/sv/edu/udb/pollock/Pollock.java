@@ -7,6 +7,8 @@ package sv.edu.udb.pollock;
 
 import sv.edu.udb.form.autor.AgregarAutor;
 import sv.edu.udb.form.autor.gestionAutor;
+import sv.edu.udb.form.obras.AgregarObra;
+import sv.edu.udb.form.obras.GestionObras;
 import sv.edu.udb.form.usuario.AgregarUsuario;
 import sv.edu.udb.form.usuario.gestionUsuario;
 
@@ -119,14 +121,24 @@ public class Pollock extends javax.swing.JFrame {
         menuBar.add(editMenu);
 
         helpMenu.setMnemonic('h');
-        helpMenu.setText("Help");
+        helpMenu.setText("Obras");
 
         contentMenuItem.setMnemonic('c');
-        contentMenuItem.setText("Contents");
+        contentMenuItem.setText("Agregar");
+        contentMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contentMenuItemActionPerformed(evt);
+            }
+        });
         helpMenu.add(contentMenuItem);
 
         aboutMenuItem.setMnemonic('a');
-        aboutMenuItem.setText("About");
+        aboutMenuItem.setText("Gestionar");
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed(evt);
+            }
+        });
         helpMenu.add(aboutMenuItem);
 
         menuBar.add(helpMenu);
@@ -178,6 +190,18 @@ public class Pollock extends javax.swing.JFrame {
         desktopPane.add(_f);
         _f.setVisible(true);
     }//GEN-LAST:event_copyMenuItemActionPerformed
+
+    private void contentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItemActionPerformed
+        AgregarObra _o = new AgregarObra();
+        desktopPane.add(_o);
+        _o.setVisible(true);
+    }//GEN-LAST:event_contentMenuItemActionPerformed
+
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+        GestionObras _go = new GestionObras();
+        desktopPane.add(_go);
+        _go.setVisible(true);
+    }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
