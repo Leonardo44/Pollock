@@ -214,7 +214,7 @@ public class Obra_Model {
             try (ResultSet data = obtenerLibro.executeQuery()) {
                 if(data != null){
                     while (data.next()) {
-                        _oList.add(new Obra(data.getString(1)));
+                        _oList.add(new Obra(data.getString(1), false));
                     }
                 }else{
                     return null;
