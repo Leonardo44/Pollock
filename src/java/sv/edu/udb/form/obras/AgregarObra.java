@@ -39,11 +39,13 @@ public class AgregarObra extends javax.swing.JInternalFrame {
     }
     public void iniciarComponentes(){
         txtNombre = new javax.swing.JTextField();
-        txtDescripcion = new javax.swing.JTextField();
+        txtDescripcion = new javax.swing.JTextArea();
         txtUrlImagen = new javax.swing.JTextField();
         cmbAutores = new javax.swing.JComboBox<>();
-        cmbAutores.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-    
+        cargarAutores();
+        txtNombre.setText("");
+        txtDescripcion.setText("");
+        txtUrlImagen.setText("");
     }
     public void cargarAutores(){
         cmbAutores.removeAllItems(); //Remover Items
@@ -66,11 +68,12 @@ public class AgregarObra extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
-        txtDescripcion = new javax.swing.JTextField();
         txtUrlImagen = new javax.swing.JTextField();
         cmbAutores = new javax.swing.JComboBox<>();
         btnAgregarObra = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtDescripcion = new javax.swing.JTextArea();
 
         lblDescripcion.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblDescripcion.setText("Descripción");
@@ -87,8 +90,6 @@ public class AgregarObra extends javax.swing.JInternalFrame {
 
         txtNombre.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
 
-        txtDescripcion.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-
         txtUrlImagen.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
 
         cmbAutores.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
@@ -104,35 +105,49 @@ public class AgregarObra extends javax.swing.JInternalFrame {
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTitulo.setText("Agregar Obras");
 
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        txtDescripcion.setRows(5);
+        jScrollPane1.setViewportView(txtDescripcion);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblTitulo)
-                .addGap(210, 210, 210))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(27, 27, 27)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(309, 309, 309))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDescripcion)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(16, 16, 16)
+                                .addComponent(txtNombre))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmbAutores, 0, 307, Short.MAX_VALUE))
-                            .addComponent(txtUrlImagen, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(199, 199, 199)
-                        .addComponent(btnAgregarObra, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(73, 73, 73))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtUrlImagen)
+                                    .addComponent(cmbAutores, 0, 544, Short.MAX_VALUE))))))
+                .addGap(46, 46, 46))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnAgregarObra, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(258, 258, 258))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblTitulo)
+                        .addGap(278, 278, 278))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,34 +155,34 @@ public class AgregarObra extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(lblTitulo)
                 .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNombre))
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblNombre))
-                        .addGap(24, 24, 24)
-                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(lblDescripcion)
-                        .addGap(33, 33, 33)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(txtUrlImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbAutores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addComponent(btnAgregarObra, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtUrlImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmbAutores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnAgregarObra, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblDescripcion)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private boolean validarDatos() {
-        if(Validacion.validar("^[A-Z][A-Za-z ,.-]+$",txtNombre.getText() , "Porfavor, revise el nombre de la obra", "Agregar Obras")
-                && Validacion.validar("^[A-Za-z ,.)'(-]+$",txtDescripcion.getText(),"Alguno caracteres no estan permitidos en la descripción","Agregar Obras")
+        if(Validacion.validar("^[A-Z][A-Za-z ñ.]+$",txtNombre.getText() , "Porfavor, revise el nombre de la obra", "Agregar Obras")
+                && Validacion.validar("^[A-Za-z ñ,.)'(-]+$",txtDescripcion.getText(),"Alguno caracteres no estan permitidos en la descripción","Agregar Obras")
                 && Validacion.validar("^[A-Za-z .'/_:#?0-9-]+$", txtUrlImagen.getText(), "Ingrese una URL correcta", "Agregar Obras")){
         return true;
         }else{
@@ -227,11 +242,12 @@ public class AgregarObra extends javax.swing.JInternalFrame {
                    }
                }
                String idObra = Obra_Model.nuevoId();
-               if(Obra_Model.insertar(new Obra(idObra,txtNombre.getText(),txtDescripcion.getText(),txtUrlImagen.getText(),objectAutor))){
-                    String urlImg = txtUrlImagen.getText();
-                    String archivoDestino = idObra + ".jpg";
+               String urlImg = txtUrlImagen.getText();
+               String archivoDestino = idObra + ".jpg";
+               if(Obra_Model.insertar(new Obra(idObra,txtNombre.getText(),txtDescripcion.getText(),archivoDestino,objectAutor))){
                     saveImage(urlImg, archivoDestino);
                     mover(archivoDestino);
+                    iniciarComponentes();
                    JOptionPane.showMessageDialog(null,"Obra registrada correctamente","Registro de Obras",JOptionPane.INFORMATION_MESSAGE);
                }else{
                    JOptionPane.showMessageDialog(null,"Ha ocurrido un error al registrar la obra","Registro de Obras",JOptionPane.ERROR_MESSAGE);
@@ -246,10 +262,11 @@ public class AgregarObra extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cmbAutores;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextArea txtDescripcion;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtUrlImagen;
     // End of variables declaration//GEN-END:variables

@@ -164,7 +164,7 @@ public class Obra_Model {
             insertarSQL.setString(2, _o.getNombre());
             insertarSQL.setString(3, _o.getDescripcion());
             insertarSQL.setString(4, _o.getImagen());
-            insertarSQL.setString(4, _o.getAutor().getIdAutor());
+            insertarSQL.setString(5, _o.getAutor().getIdAutor());
 
             insertarSQL.executeUpdate();
             return true;
