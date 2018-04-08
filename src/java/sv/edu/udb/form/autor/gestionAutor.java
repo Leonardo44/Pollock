@@ -314,7 +314,7 @@ public class gestionAutor extends javax.swing.JInternalFrame {
             if(respuesta == JOptionPane.OK_OPTION){ //Eliminar
                 
                 if(Autor_Model.eliminar(new Autor(idUsuarioSeleccionado, false))){
-                    JOptionPane.showMessageDialog(null, "Autor elimnado correctamente", "Gestión de Autor", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Autor eliminado correctamente", "Gestión de Autor", JOptionPane.INFORMATION_MESSAGE);
                     inicializarComponentes();
                     cargarPais();
                     cargarAutores();

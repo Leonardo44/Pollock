@@ -166,8 +166,9 @@ public class AgregarUsuario extends javax.swing.JInternalFrame {
                     if(Usuario_Model.verificarCorreo(correo)){
                         if(Usuario_Model.insertar(new Usuario(idUsuario, nombre, apellido, correo, fechaNacimiento, password, true, tipo))){
                             JOptionPane.showMessageDialog(null, "Usuario registrado correctamente", "Registro de Usuario", JOptionPane.INFORMATION_MESSAGE);
+                            limpiarComponentes();//Reiniciamos componentes
                         }else{
-                            JOptionPane.showMessageDialog(null, "ha ocurrido un error", "Registro de Usuario", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "Registro de Usuario", JOptionPane.ERROR_MESSAGE);
                         }
                     }else{
                         JOptionPane.showMessageDialog(null, "El correo ingresado ya existe!", "Registro de Usuario", JOptionPane.WARNING_MESSAGE);
@@ -178,7 +179,15 @@ public class AgregarUsuario extends javax.swing.JInternalFrame {
             Logger.getLogger(AgregarUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
-
+    
+    public void limpiarComponentes(){
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtFechaNacimiento.setText("");
+        txtCorreo.setText("");
+        cargarTipoUsuario();
+    }
+    
     //Carga los tipos de usuario en el cmb
     public void cargarTipoUsuario(){
         cmbTipoUsuario.removeAllItems(); //Remover Items
