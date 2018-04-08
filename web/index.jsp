@@ -3,6 +3,7 @@
     Created on : 04-03-2018, 04:45:01 PM
     Author     : Frank
 --%>
+<%@page import="java.util.Random"%>
 <%@page import="sv.edu.udb.modelos.Obra_Model"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.List"%>
@@ -17,6 +18,7 @@
     
     <%
         List<Obra> obras = Obra_Model.obtenerObras();
+        Random r = new Random();
     %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -30,6 +32,7 @@
 
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" ntegrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script> -->
 
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
     <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
@@ -41,6 +44,7 @@
 
     <link rel="stylesheet" href="css/main.css">
     <script src="js/init.js"></script>
+    <script src="js/main.js"></script>
 
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
@@ -83,7 +87,7 @@
                 if(obras.size() > 0){
                     for(Obra _o : obras){
                        %>
-                       <div class="grid-item">
+                        <div class="grid-item <%= (r.nextInt(11 - 1) + 1) <= 5 ? "g2" : "" %>">
                             <div class="card">
                                 <div class="card-image">
                                     <img src="images/obras/<%= _o.getImagen() %>">

@@ -49,37 +49,62 @@ x-rating > .star.full::after {
     color: #fd0;
 }
 
-@media only screen and (max-width : 600px) {
-    #obraCont{
-        display: block;
-    } 
+.grid-sizer,
+.grid-item {
+    width: 33.333%;
 }
 
-/* .input-field label {
-    color: #000 !important;
-} */
-/* label focus color */
-/* .input-field input[type=text]:focus + label {
-    color: #000 !important;
-} */
-/* label underline focus color */
-/* .input-field input[type=text]:focus {
-    border-bottom: 1px solid #64ffda !important;
-    box-shadow: 0 1px 0 0 #64ffda !important;
-} */
+.grid-item{
+    padding: 10px;
+}
 
-/* valid color */
-/* .input-field input[type=text].valid {
-    border-bottom: 1px solid #000 !important;
-    box-shadow: 0 1px 0 0 #000 !important;
-} */
-/* invalid color */
-/* .input-field input[type=text].invalid {
-    border-bottom: 1px solid #000 !important;
-    box-shadow: 0 1px 0 0 #000 !important;
-} */
+.grid-item.g2 {
+    width: 66.666%;
+}
 
-/* icon prefix focus color */
-/* .input-field .prefix.active {
-    color: #4caf50 !important;
-} */
+.grid-item img {
+	display: block;
+	max-width: 100%;
+}
+
+@media(max-width: 70em) and (min-width: 30em){
+	.grid-sizer,
+	.grid-item {
+		width: 50%;
+    }
+    
+    .grid-item.g2{
+        width: 100%;
+    }
+}
+
+@media(max-width: 30em){
+	.grid-sizer,
+	.grid-item, .grid-item.g2 {
+		width: 100%;
+	}
+}
+
+#comments{
+    padding: 2%;
+    background: #fafafa;
+}
+
+#comments li{
+    border: 2px solid #bdbdbd;
+    margin: 2% 0;
+    padding: 1%;
+    display: flex;
+    flex-direction: column;
+}
+
+#comments li .content{
+    text-align: justify;
+}
+
+#comments li .data{
+    font-size: 0.8em;
+    margin-top: 1%;
+    text-align: right;
+    font-style: italic;
+}

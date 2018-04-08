@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.udb.connection.DBConection;
 import sv.edu.udb.entidades.Autor;
+import sv.edu.udb.entidades.Comentario;
 import sv.edu.udb.entidades.Obra;
 
 /**
@@ -101,7 +102,7 @@ public class Obra_Model {
             try (ResultSet dataLibro = obtenerLibro.executeQuery()) {
                 while(dataLibro.next()){
                     
-                    Obra _l = new Obra(
+                    Obra _o = new Obra(
                             dataLibro.getString(1),
                             dataLibro.getString(2),
                             dataLibro.getString(3),
@@ -112,22 +113,26 @@ public class Obra_Model {
                     if(relaciones){
                         PreparedStatement obtenerAutor = DBConection.getStatement("SELECT a.idAutor, a.nombres, a.apellidos, a.fechaNac, a.idPais FROM autor a INNER JOIN obra o ON o.idAutor = a.idAutor WHERE o.idObra = ?;");
                         PreparedStatement obtenerCalificacion = DBConection.getStatement("SELECT calificacion FROM Obra WHERE idObra= ?;");
+                        PreparedStatement obtenerComentarios = DBConection.getStatement("SELECT * FROM Comentario WHERE idObra= ?;");
                         
-                        obtenerAutor.setString(1, _l.getIdObra());
-                        obtenerCalificacion.setString(1, _l.getIdObra());
+                        obtenerAutor.setString(1, _o.getIdObra());
+                        obtenerCalificacion.setString(1, _o.getIdObra());
+                        obtenerComentarios.setString(1, _o.getIdObra());
                         
                         ResultSet DataA = obtenerAutor.executeQuery();
                         ResultSet DataC = obtenerCalificacion.executeQuery();
+                        ResultSet DataCo = obtenerComentarios.executeQuery();
                         
                         Autor _a = null;
                         float _c = 0;
+                        List<Comentario> _co = new ArrayList();
                         
-                        Date date;
+                        Date date = null;
                         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                         
                         if(DataA != null){
                             while (DataA.next()) {
-                                date = df.parse(DataA.getString(4));
+                                date = df.parse(DataA.getDate(4).toString());
                                 _a = new Autor(DataA.getString(1), DataA.getString(2), DataA.getString(3), date);
                             }
                         }
@@ -137,12 +142,20 @@ public class Obra_Model {
                                 _c += DataC.getFloat(1);
                             }
                         }
+
+                        if(DataCo != null){
+                            while (DataCo.next()) {
+                                date = (DataCo.getDate(3));
+                                _co.add(new Comentario(DataCo.getString(2), date, DataCo.getString(4)));
+                            }
+                        }
                         
-                        _l.setAutor(_a);
-                        _l.setCalificacion(_c);
+                        _o.setAutor(_a);
+                        _o.setCalificacion(_c);
+                        _o.setComentarios(_co);
                     }
                     
-                    return _l;
+                    return _o;
                 }
             } catch (ParseException ex) {
                 Logger.getLogger(Obra_Model.class.getName()).log(Level.SEVERE, null, ex);
@@ -227,6 +240,7 @@ public class Obra_Model {
             return null;
         }
     }
+
     public static List<Obra> obtenerObrasAutor(String id){ //Obtiene las obras de un autor
         List<Obra> _oList = new ArrayList();
         PreparedStatement obtenerLibro = DBConection.getStatement("SELECT idObra FROM Obra WHERE idAutor = ?;");

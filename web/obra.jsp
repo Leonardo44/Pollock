@@ -3,6 +3,7 @@
     Created on : 04-04-2018, 05:13:23 PM
     Author     : Frank
 --%>
+<%@page import="sv.edu.udb.entidades.Comentario"%>
 <%@page import="sv.edu.udb.entidades.Obra"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -103,7 +104,52 @@
                 <a id="btnLeer" class="deep-purple darken-4 btn waves-effect waves-light"><i class="material-icons left">graphic_eq</i>Leer</a>
                 <hr>
             </div>
+            <div class="col s12" id="commmentsCont">
+                <h5 style="display: flex; align-items: center;">
+                    Comentarios &nbsp;&nbsp;
+                    <a title="Añadir comentario" href="#mdlComment" class="modal-trigger btn-floating waves-effect waves-light deep-purple darken-4"><i class="material-icons">add</i></a>
+                </h5>
+
+                <ul id="comments" class="z-depth-2">
+                    <%
+                        if(_o.getComentarios().size() == 0)
+                        {
+                    %>
+                    <h5 class="center red-text text-darken-1">Esta obra no tiene comentarios</h5>
+                    <%
+                        }else
+                        {
+                            for(Comentario _c : _o.getComentarios()){
+                    %>
+                    <li class="comment-item hoverable">
+                        <div class="content"><%= _c.getTexto() %></div>
+                        <div class="data"><%= _c.getFecha() %></div>
+                    </li>
+                    <%
+                            }
+                        }
+                    %>
+                </ul>
+            </div>
         </main>
+
+        <div class="modal bottom-sheet" id="mdlComment">
+            <div class="modal-content"><br>
+                <h4 class="center deep-purple-text text-darken-4">Agregar comentario</h4><br>
+                <form name="frmComment" id="frmComment" class="row">
+                    <div class="input-field col s8 offset-s2">
+                        <textarea class="materialize-textarea" name="txtTexto" id="txtTexto" cols="30" rows="10"></textarea>
+                        <label for="txtTexto">Comentario</label>
+                    </div>
+                    <div class="col s12" style="display: flex; justify-content: center;">
+                        <a id="btnComment" class="btn deep-purple darken-4 waves-effect waves-light">Enviar</a>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action modal-close waves-effect waves-red btn-flat">Cerrar</a>
+            </div>
+        </div>
 
         <script src="js/Rating.js"></script>
     </body>

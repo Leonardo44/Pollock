@@ -5,6 +5,7 @@
  */
 package sv.edu.udb.entidades;
 
+import java.util.List;
 import sv.edu.udb.modelos.Obra_Model;
 
 /**
@@ -18,6 +19,7 @@ public class Obra {
     private String imagen;
     private Autor autor;
     private float calificacion;
+    private List<Comentario> comentarios;
     
     public String getIdObra() {
         return idObra;
@@ -66,6 +68,14 @@ public class Obra {
     public void setCalificacion(float calificacion) {
         this.calificacion = calificacion;
     }
+    
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }
 
     public Obra(String idObra, String nombre, String descripcion, String imagen, Autor autor) {
         this.idObra = idObra;
@@ -87,6 +97,7 @@ public class Obra {
             this.imagen = _o.imagen;
             this.autor = _o.autor;
             this.calificacion = _o.calificacion;
+            this.comentarios = _o.comentarios;
         }else{
             this.idObra = null;
         }
