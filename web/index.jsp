@@ -55,7 +55,7 @@
     <header>
         <nav>
             <div class="nav-wrapper deep-purple darken-4">
-                <a href="/" class="brand-logo">
+                <a href="/Pollock/" class="brand-logo">
                     <img src="/Pollock/images/logo.png" width="50px" class="responsive-img">
                     <span>Pollock</span>
                 </a>
@@ -64,7 +64,7 @@
                 </a>
                 <ul class="right hide-on-med-and-down">
                     <li class="active">
-                        <a href="/">Ver Obras</a>
+                        <a href="/Pollock/">Ver Obras</a>
                     </li>
                     <!-- <li><a href="collapsible.html">Javascript</a></li> -->
                     <!-- <li><a href="mobile.html">Mobile</a></li> -->

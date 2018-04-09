@@ -50,7 +50,7 @@
         <header>
             <nav>
                 <div class="nav-wrapper deep-purple darken-4">
-                    <a href="/Pollock" class="brand-logo">
+                    <a href="/Pollock/" class="brand-logo">
                         <img src="/Pollock/images/logo.png" width="50px" class="responsive-img">
                         <span>Pollock</span>
                     </a>
