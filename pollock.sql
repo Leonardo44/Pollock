@@ -1,4 +1,4 @@
-﻿CREATE DATABASE  IF NOT EXISTS `pollock` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish2_ci */;
+CREATE DATABASE  IF NOT EXISTS `pollock` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish2_ci */;
 USE `pollock`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
@@ -84,7 +84,7 @@ CREATE TABLE `obra` (
   `idObra` varchar(5) COLLATE utf8_spanish2_ci NOT NULL,
   `nombre` varchar(100) COLLATE utf8_spanish2_ci NOT NULL,
   `descripcion` longtext COLLATE utf8_spanish2_ci NOT NULL,
-  `imagen` varchar(150) COLLATE utf8_spanish2_ci NOT NULL,
+  `imagen` varchar(45) COLLATE utf8_spanish2_ci NOT NULL,
   `calificacion` decimal(10,2) DEFAULT '0.00',
   `idAutor` varchar(5) COLLATE utf8_spanish2_ci NOT NULL,
   PRIMARY KEY (`idObra`),
@@ -150,6 +150,7 @@ CREATE TABLE `tipos_usuario` (
 
 LOCK TABLES `tipos_usuario` WRITE;
 /*!40000 ALTER TABLE `tipos_usuario` DISABLE KEYS */;
+INSERT INTO `tipos_usuario` VALUES ('B','Bibliotecario','Posee el acceso total a la aplicacion'),('U','Usuario','Posee el acceso total a las obras');
 /*!40000 ALTER TABLE `tipos_usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -167,7 +168,7 @@ CREATE TABLE `usuario` (
   `correo` varchar(60) COLLATE utf8_spanish2_ci NOT NULL,
   `fechaNacimiento` date NOT NULL,
   `username` varchar(10) COLLATE utf8_spanish2_ci NOT NULL,
-  `password` varchar(300) COLLATE utf8_spanish2_ci NOT NULL,
+  `password` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
   `estado` tinyint(1) NOT NULL,
   `tipoUsuario` varchar(1) COLLATE utf8_spanish2_ci NOT NULL,
   PRIMARY KEY (`idUsuario`),
@@ -183,7 +184,6 @@ CREATE TABLE `usuario` (
 --
 
 LOCK TABLES `usuario` WRITE;
-INSERT INTO `tipos_usuario` (`idTipoUsuario`, `nombre`, `descripcion`) VALUES ('U', 'Usuario', 'Posee el acceso total a las obras'), ('B', 'Bibliotecario', 'Posee el acceso total a la aplicacion')
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -197,4 +197,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-07 20:21:52
+-- Dump completed on 2018-04-09  0:02:48
