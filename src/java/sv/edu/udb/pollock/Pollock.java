@@ -5,28 +5,36 @@
  */
 package sv.edu.udb.pollock;
 
-import javax.swing.JOptionPane;
 import sv.edu.udb.form.autor.AgregarAutor;
 import sv.edu.udb.form.autor.gestionAutor;
 import sv.edu.udb.form.obras.AgregarObra;
 import sv.edu.udb.form.obras.GestionObras;
 import sv.edu.udb.form.usuario.AgregarUsuario;
 import sv.edu.udb.form.usuario.gestionUsuario;
-import sv.edu.udb.pollock.Login;
+import sv.edu.udb.form.usuario.cambiarContrasenna;
 /**
  *
  * @author Frank
  */
 public class Pollock extends javax.swing.JFrame {
-    public boolean estado = false;
+    public static String tipoUsuario;
     /**
      * Creates new form Pollock
+     * @param tipouser
      */
-    public Pollock() {
-        verificarS();
+    public Pollock(String tipouser) {
         initComponents();
+        tipoUsuario = tipouser;
+        if(tipoUsuario.equals("B")){
+        fileMenu.setEnabled(true);
+        editMenu.setEnabled(true);
+        helpMenu.setEnabled(true);
+        }else if(tipoUsuario.equals("U")){
+        fileMenu.setEnabled(false);
+        editMenu.setEnabled(false);
+        helpMenu.setEnabled(true);
+        }
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,13 +49,11 @@ public class Pollock extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
-        saveAsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         cutMenuItem = new javax.swing.JMenuItem();
         copyMenuItem = new javax.swing.JMenuItem();
-        pasteMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -74,11 +80,6 @@ public class Pollock extends javax.swing.JFrame {
             }
         });
         fileMenu.add(saveMenuItem);
-
-        saveAsMenuItem.setMnemonic('a');
-        saveAsMenuItem.setText("Save As ...");
-        saveAsMenuItem.setDisplayedMnemonicIndex(5);
-        fileMenu.add(saveAsMenuItem);
 
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
@@ -112,13 +113,13 @@ public class Pollock extends javax.swing.JFrame {
         });
         editMenu.add(copyMenuItem);
 
-        pasteMenuItem.setMnemonic('p');
-        pasteMenuItem.setText("Paste");
-        editMenu.add(pasteMenuItem);
-
-        deleteMenuItem.setMnemonic('d');
-        deleteMenuItem.setText("Delete");
-        editMenu.add(deleteMenuItem);
+        jMenuItem1.setText("Gestión contraseñas");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        editMenu.add(jMenuItem1);
 
         menuBar.add(editMenu);
 
@@ -160,16 +161,7 @@ public class Pollock extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void verificarS(){
-        if(estado){
-            JOptionPane.showMessageDialog(null, "bienvenido!!", "Pollock",JOptionPane.INFORMATION_MESSAGE);
-        }else{
-            Login _f = new Login();
-            desktopPane.add(_f);
-            this.setVisible(false);
-            _f.setVisible(true);
-        }
-    }
+
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
@@ -214,6 +206,12 @@ public class Pollock extends javax.swing.JFrame {
         _go.setVisible(true);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        cambiarContrasenna _o = new cambiarContrasenna();
+        desktopPane.add(_o);
+        _o.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -244,7 +242,7 @@ public class Pollock extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Pollock().setVisible(true);
+                new Login().setVisible(true);
             }
         });
     }
@@ -254,16 +252,14 @@ public class Pollock extends javax.swing.JFrame {
     private javax.swing.JMenuItem contentMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
-    private javax.swing.JMenuItem pasteMenuItem;
-    private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
 

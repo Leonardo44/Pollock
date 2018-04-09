@@ -208,8 +208,8 @@ public class Usuario_Model{
             return false;
         }
     }
-    public static boolean BuscarUsuario(String correo, String password){
-        PreparedStatement consulta = DBConection.getStatement("SELECT COUNT(idUsuario) FROM Usuario WHERE correo = ? AND password = ? AND tipoUsuario = B");
+    public static boolean buscarUsuario(String correo, String password){
+        PreparedStatement consulta = DBConection.getStatement("SELECT COUNT(idUsuario) FROM Usuario WHERE correo = ? AND password = ?");
         try{
             consulta.setString(1,correo);
             consulta.setString(2, password);
@@ -218,6 +218,25 @@ public class Usuario_Model{
             int num = data.getInt(1);
             data.close();
             if(num > 0){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(Exception ex){
+            Logger.getLogger(Usuario_Model.class.getName()).log(Level.SEVERE,null,ex);
+            return false;
+        }
+    }
+    public static boolean obtenerT(String correo,String password){
+        PreparedStatement consulta = DBConection.getStatement("SELECT tipoUsuario FROM Usuario WHERE correo = ? AND password = ?");
+        try{
+            consulta.setString(1,correo);
+            consulta.setString(2, password);
+            ResultSet datos = consulta.executeQuery();
+            datos.next();
+            String tipoU = datos.getString("tipoUsuario");
+            datos.close();
+            if(tipoU.equals("B")){
                 return true;
             }else{
                 return false;

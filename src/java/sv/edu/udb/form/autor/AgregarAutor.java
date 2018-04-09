@@ -54,7 +54,11 @@ public class AgregarAutor extends javax.swing.JInternalFrame {
         jcbPais = new javax.swing.JComboBox<>();
         btnIngresar = new javax.swing.JButton();
         txtFechaNac = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
+        setClosable(true);
+        setResizable(true);
+        setTitle("Gestión de Autores");
         setPreferredSize(new java.awt.Dimension(500, 500));
         try {
             setSelected(true);
@@ -62,28 +66,36 @@ public class AgregarAutor extends javax.swing.JInternalFrame {
             e1.printStackTrace();
         }
 
+        lblNombre.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblNombre.setText("Nombre:");
 
+        txtNombre.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreActionPerformed(evt);
             }
         });
 
+        lblApellido.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblApellido.setText("Apellido:");
 
+        txtApellido.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         txtApellido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtApellidoActionPerformed(evt);
             }
         });
 
+        lblFechaNac.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblFechaNac.setText("Fecha de nacimiento:");
 
+        lblPais.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblPais.setText("País: ");
 
+        jcbPais.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jcbPais.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        btnIngresar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         btnIngresar.setText("Agregar Autor");
         btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,40 +103,51 @@ public class AgregarAutor extends javax.swing.JInternalFrame {
             }
         });
 
+        txtFechaNac.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setText("Agregar Autor");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(126, 126, 126)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblNombre)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblApellido)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblFechaNac)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtFechaNac)))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addGap(137, 137, 137)
+                .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 135, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnIngresar)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblPais)
-                        .addGap(18, 18, 18)
-                        .addComponent(jcbPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(183, 183, 183))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblNombre)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtNombre))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblApellido)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtApellido))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lblFechaNac)
+                                    .addComponent(lblPais))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtFechaNac)
+                                    .addComponent(jcbPais, 0, 183, Short.MAX_VALUE))))
+                        .addGap(39, 39, 39))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(151, 151, 151))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(78, 78, 78)
+                .addGap(23, 23, 23)
+                .addComponent(jLabel1)
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNombre))
@@ -140,9 +163,9 @@ public class AgregarAutor extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPais)
                     .addComponent(jcbPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                .addGap(29, 29, 29)
                 .addComponent(btnIngresar)
-                .addContainerGap(188, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -229,6 +252,7 @@ public class AgregarAutor extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIngresar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JComboBox<String> jcbPais;
     private javax.swing.JLabel lblApellido;
     private javax.swing.JLabel lblFechaNac;

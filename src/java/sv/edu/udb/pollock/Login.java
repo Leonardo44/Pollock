@@ -10,14 +10,14 @@ import javax.swing.JOptionPane;
 import sv.edu.udb.entidades.Usuario;
 import sv.edu.udb.modelos.Usuario_Model;
 import sv.edu.udb.pollock.Pollock;
+import sv.edu.udb.validacion.Validacion;
 
 /**
  *
  * @author Diego Lemus
  */
 public class Login extends javax.swing.JFrame {
-    public static String correo = "";
-    public static String pass = "";
+    protected static String typeU;
     /**
      * Creates new form Login
      */
@@ -108,17 +108,21 @@ public class Login extends javax.swing.JFrame {
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
         char[] arrayC = txtPass.getPassword(); 
         String passwor = new String(arrayC); 
-        if(iniciarSesion(txtCorreo.getText(),passwor)){
-            Pollock _f =  new Pollock();
-            _f.estado = true;
-            desktopPane.add(_f);
-            _f.setVisible(true);
-            this.setVisible(false);
-        }else{
-            this.setVisible(true);
+        if(validarCorreo()){
+            if(iniciarSesion(txtCorreo.getText(),passwor)){
+                Pollock pol = new Pollock(typeU);
+                pol.setVisible(true);
+                Login.this.setVisible(false);
+            }
         }
     }//GEN-LAST:event_btnIniciarActionPerformed
-
+    private boolean validarCorreo(){
+        if(Validacion.validar("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", txtCorreo.getText(), "Correo Electrónico no válido", "Registro Usuario")){
+            return true;
+        }else{
+        return false;
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -154,7 +158,12 @@ public class Login extends javax.swing.JFrame {
         });
     }
     public static boolean iniciarSesion(String correo,String pass){
-        if(Usuario_Model.BuscarUsuario(correo, pass)){
+        if(Usuario_Model.buscarUsuario(correo, pass)){
+            if(Usuario_Model.obtenerT(correo, pass)){
+            typeU = "B";
+            }else{
+                typeU = "U";
+            }
             Usuario usuarioSes = new Usuario(correo,pass,true);
             JOptionPane.showMessageDialog(null, "Bienvenido a Pollock!!","Iniciar Sesión",JOptionPane.INFORMATION_MESSAGE);
             return true;            

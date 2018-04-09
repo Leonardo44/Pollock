@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `pollock` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish2_ci */;
+﻿CREATE DATABASE  IF NOT EXISTS `pollock` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish2_ci */;
 USE `pollock`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
@@ -183,6 +183,7 @@ CREATE TABLE `usuario` (
 --
 
 LOCK TABLES `usuario` WRITE;
+INSERT INTO `tipos_usuario` (`idTipoUsuario`, `nombre`, `descripcion`) VALUES ('U', 'Usuario', 'Posee el acceso total a las obras'), ('B', 'Bibliotecario', 'Posee el acceso total a la aplicacion')
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;

@@ -73,6 +73,9 @@ public class gestionAutor extends javax.swing.JInternalFrame {
         btnEliminar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
 
+        setClosable(true);
+        setTitle("Gestión de Autores");
+
         lblFiltro.setText("Filtro");
 
         txtBuscador.addKeyListener(new java.awt.event.KeyAdapter() {
