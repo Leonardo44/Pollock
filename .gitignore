@@ -9,7 +9,6 @@
 
 # BlueJ files
 *.ctxt
-
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -30,6 +29,8 @@ target/
 
 ### NetBeans ###
 nbproject/private/
+nbproject/
+lib/nblibraries.properties
 build/
 nbbuild/
 dist/
