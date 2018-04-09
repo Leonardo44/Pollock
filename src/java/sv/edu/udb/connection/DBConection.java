@@ -40,7 +40,6 @@ public class DBConection {
             return null;
         }
     }
-    
     public static PreparedStatement getStatement(String sql){
         try{
             Class.forName("com.mysql.jdbc.Driver");

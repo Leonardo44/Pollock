@@ -20,6 +20,15 @@ public class Usuario {
     private Date fechaNacimiento;
     private String password;
     private boolean estado;
+    private boolean sesion;
+
+    public boolean isSesion() {
+        return sesion;
+    }
+
+    public void setSesion(boolean sesion) {
+        this.sesion = sesion;
+    }
     private String tipoUsuario;
 
     public String getIdUsuario() {
@@ -105,7 +114,11 @@ public class Usuario {
         this.fechaNacimiento = fechaNacimiento;
         this.estado = estado;
     }
-
+    public Usuario(String correo,String password,boolean sesion){
+        this.correo = correo;
+        this.password = password;
+        this.sesion = sesion;
+    }
     public Usuario(String idUsuario, String password) {
         this.idUsuario = idUsuario;
         this.password = password;

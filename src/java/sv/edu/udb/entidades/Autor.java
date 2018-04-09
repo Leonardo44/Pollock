@@ -122,7 +122,6 @@ public class Autor {
             this.obras = _a.getObras();
         }
     }
-
     public static String crearNombreAutor(int numAutor) {
         String nombreAutor = "A";
         if (numAutor < 10) {

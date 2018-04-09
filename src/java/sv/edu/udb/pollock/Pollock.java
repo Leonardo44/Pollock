@@ -5,23 +5,25 @@
  */
 package sv.edu.udb.pollock;
 
+import javax.swing.JOptionPane;
 import sv.edu.udb.form.autor.AgregarAutor;
 import sv.edu.udb.form.autor.gestionAutor;
 import sv.edu.udb.form.obras.AgregarObra;
 import sv.edu.udb.form.obras.GestionObras;
 import sv.edu.udb.form.usuario.AgregarUsuario;
 import sv.edu.udb.form.usuario.gestionUsuario;
-
+import sv.edu.udb.pollock.Login;
 /**
  *
  * @author Frank
  */
 public class Pollock extends javax.swing.JFrame {
-
+    public boolean estado = false;
     /**
      * Creates new form Pollock
      */
     public Pollock() {
+        verificarS();
         initComponents();
     }
 
@@ -158,7 +160,16 @@ public class Pollock extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private void verificarS(){
+        if(estado){
+            JOptionPane.showMessageDialog(null, "bienvenido!!", "Pollock",JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            Login _f = new Login();
+            desktopPane.add(_f);
+            this.setVisible(false);
+            _f.setVisible(true);
+        }
+    }
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed

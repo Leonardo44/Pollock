@@ -208,4 +208,23 @@ public class Usuario_Model{
             return false;
         }
     }
+    public static boolean BuscarUsuario(String correo, String password){
+        PreparedStatement consulta = DBConection.getStatement("SELECT COUNT(idUsuario) FROM Usuario WHERE correo = ? AND password = ? AND tipoUsuario = B");
+        try{
+            consulta.setString(1,correo);
+            consulta.setString(2, password);
+            ResultSet data = consulta.executeQuery();
+            data.next();
+            int num = data.getInt(1);
+            data.close();
+            if(num > 0){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(Exception ex){
+            Logger.getLogger(Usuario_Model.class.getName()).log(Level.SEVERE,null,ex);
+            return false;
+        }
+    }
 }
