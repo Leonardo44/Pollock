@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,11 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sv.edu.udb.entidades.Autor;
 import sv.edu.udb.entidades.Obra;
+import sv.edu.udb.modelos.Autor_Model;
 import sv.edu.udb.modelos.Obra_Model;
+import sv.edu.udb.pollock.Pollock;
 import sv.edu.udb.validacion.Validacion;
 
 
@@ -33,8 +37,8 @@ import sv.edu.udb.validacion.Validacion;
  */
 public class GestionObras extends javax.swing.JInternalFrame {
     private DefaultTableModel modelo = null;
-    private List<Autor> autores = new ArrayList<Autor>();
-    private List<Obra> obras = new ArrayList<Obra>();
+    private List<Autor> autores = Autor_Model.obtenerAutores();
+    private List<Obra> obras = Obra_Model.obtenerObras(true);
     private String idObraSeleccionada = "";
     private List<Autor> autorBusqueda = new ArrayList<Autor>();
     /**
@@ -44,6 +48,20 @@ public class GestionObras extends javax.swing.JInternalFrame {
         initComponents();
         inicializarComponentes();
         cargarObras();
+        
+        String savePath = System.getProperty("user.dir") + "^web^images";
+        savePath = String.join(System.getProperty("file.separator"), savePath.split("\\^"));
+
+        ImageIcon i = null;
+        URL url = null;
+        try {
+            url = new URL("file:///" + savePath + System.getProperty("file.separator") + "logo.png");
+            i = new ImageIcon(url);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Pollock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        setFrameIcon(i);
     }
     
     /**
@@ -86,7 +104,7 @@ public class GestionObras extends javax.swing.JInternalFrame {
         String[] columns = {"Nombre","Descripción","Imagen","Nombre del autor"};
         modelo = new DefaultTableModel(datos,columns);
         for(Obra _o: obras){
-            Object[] nuevaLinea = {_o.getNombre(),_o.getDescripcion(),_o.getImagen(),_o.getAutor().getNombres() +" "+ _o.getAutor().getApellidos()};
+            Object[] nuevaLinea = {_o.getNombre(),_o.getDescripcion(),_o.getImagen(), _o.getAutor().getNombres() +" "+ _o.getAutor().getApellidos()};
             modelo.addRow(nuevaLinea);
         }
         jTblObras.setModel(modelo);
@@ -130,7 +148,7 @@ public class GestionObras extends javax.swing.JInternalFrame {
         cmbBuscador = new javax.swing.JComboBox<>();
 
         setClosable(true);
-        setTitle("Gestión de Obras");
+        setTitle("[Pollock] - Gestión de Obras");
 
         jTblObras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -306,7 +324,8 @@ public class GestionObras extends javax.swing.JInternalFrame {
                         .addGap(141, 141, 141)
                         .addComponent(lblFiltro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cmbBuscador, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(cmbBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -316,7 +335,7 @@ public class GestionObras extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFiltro)
                     .addComponent(cmbBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))

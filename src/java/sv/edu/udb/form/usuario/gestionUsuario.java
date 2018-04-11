@@ -5,6 +5,8 @@
  */
 package sv.edu.udb.form.usuario;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,13 +15,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import sv.edu.udb.entidades.Encriptar;
 import sv.edu.udb.entidades.TipoUsuario;
 import sv.edu.udb.entidades.Usuario;
 import sv.edu.udb.modelos.TipoUsuario_Model;
 import sv.edu.udb.modelos.Usuario_Model;
+import sv.edu.udb.pollock.Pollock;
 import sv.edu.udb.validacion.Validacion;
 
 /**
@@ -39,6 +42,20 @@ public class gestionUsuario extends javax.swing.JInternalFrame {
         initComponents();
         inicializarComponente();
         cargarUsuarios();
+        
+        String savePath = System.getProperty("user.dir") + "^web^images";
+        savePath = String.join(System.getProperty("file.separator"), savePath.split("\\^"));
+
+        ImageIcon i = null;
+        URL url = null;
+        try {
+            url = new URL("file:///" + savePath + System.getProperty("file.separator") + "logo.png");
+            i = new ImageIcon(url);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Pollock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        setFrameIcon(i);
     }
     
     
@@ -50,7 +67,11 @@ public class gestionUsuario extends javax.swing.JInternalFrame {
         
         for(Usuario _u : usuarios){
             String estado = (_u.isEstado()) ? "Activo" : "Pasivo";
-            Object[] nuevaLinea = {_u.getNombre(), _u.getApellido(), _u.getFechaNacimiento(), _u.getCorreo(), estado, _u.getTipoUsuario()};
+            
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String date = df.format(_u.getFechaNacimiento());
+            
+            Object[] nuevaLinea = {_u.getNombre(), _u.getApellido(), date, _u.getCorreo(), estado, _u.getTipoUsuario()};
             modelo.addRow(nuevaLinea);
         }       
         jtblUsuarios.setModel(modelo);
@@ -112,7 +133,8 @@ public class gestionUsuario extends javax.swing.JInternalFrame {
         btnEliminar = new javax.swing.JButton();
 
         setClosable(true);
-        setTitle("Gestión de Usuarios");
+        setTitle("[Pollock] - Gestión de Usuarios");
+        setToolTipText("");
 
         jtblUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

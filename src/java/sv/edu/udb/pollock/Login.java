@@ -5,11 +5,20 @@
  */
 package sv.edu.udb.pollock;
 
-import javax.servlet.http.HttpSession;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+import sv.edu.udb.connection.Email;
+import sv.edu.udb.entidades.Encriptar;
 import sv.edu.udb.entidades.Usuario;
 import sv.edu.udb.modelos.Usuario_Model;
-import sv.edu.udb.pollock.Pollock;
 import sv.edu.udb.validacion.Validacion;
 
 /**
@@ -23,6 +32,27 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+    
+        String savePath = System.getProperty("user.dir") + "^web^images";
+        savePath = String.join(System.getProperty("file.separator"), savePath.split("\\^"));
+
+        Image i = null;
+        URL url = null;
+        try {
+            url = new URL("file:///" + savePath + System.getProperty("file.separator") + "logo.png");
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Pollock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+            i = ImageIO.read(url);
+        } catch (IOException ex) {
+            Logger.getLogger(Pollock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        setIconImage(i);
     }
     
     /**
@@ -40,8 +70,11 @@ public class Login extends javax.swing.JFrame {
         txtCorreo = new javax.swing.JTextField();
         btnIniciar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        btnPass = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("[Pollock]");
+        setResizable(false);
 
         txtPass.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
 
@@ -64,42 +97,60 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Pollock");
 
+        btnPass.setText("He olvidado mi contraseña");
+        btnPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPassActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtCorreo, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtPass, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(90, 90, 90)
-                        .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(35, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(169, 169, 169))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 85, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(204, 204, 204))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1)
+                                            .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(64, 64, 64)))
+                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(162, 162, 162))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnPass)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(32, 32, 32)
                 .addComponent(jLabel3)
-                .addGap(31, 31, 31)
+                .addGap(33, 33, 33)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addGap(18, 18, 18)
                 .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addGap(18, 18, 18)
+                .addComponent(btnPass)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -109,18 +160,53 @@ public class Login extends javax.swing.JFrame {
         char[] arrayC = txtPass.getPassword(); 
         String passwor = new String(arrayC); 
         if(validarCorreo()){
-            if(iniciarSesion(txtCorreo.getText(),passwor)){
+            if(iniciarSesion(txtCorreo.getText(), passwor)){
                 Pollock pol = new Pollock(typeU);
                 pol.setVisible(true);
                 Login.this.setVisible(false);
             }
         }
     }//GEN-LAST:event_btnIniciarActionPerformed
+
+    private void btnPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPassActionPerformed
+        boolean f = true;
+        String _e = "";
+        
+        do {            
+            _e = JOptionPane.showInputDialog(this, "Ingresa tu correo", "[Pollock] - Recuperar de contraseña", JOptionPane.INFORMATION_MESSAGE);
+            if(!validarCorreo(_e)){
+                f = true;
+            }else{
+                f = false;
+            }
+        } while (f);
+        
+        Usuario u = Usuario_Model.obtenerUsuarioCorreo(_e);
+        if(u != null){
+            String pass = Encriptar.desencriptar(u.getPassword());
+            if (enviarCorreo(_e, pass)) {
+                JOptionPane.showMessageDialog(null, "El correo con la contraseña ha sido enviado éxitosamente", "[Pollock] - Recuperar de contraseña", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "ha ocurrido un error al enviar el correo", "[Pollock] - Recuperar de contraseña", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "El correo ingresado no está registrado en la base de datos!", "[Pollock] - Recuperar de contraseña", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnPassActionPerformed
+    
     private boolean validarCorreo(){
         if(Validacion.validar("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", txtCorreo.getText(), "Correo Electrónico no válido", "Registro Usuario")){
             return true;
         }else{
         return false;
+        }
+    }
+    
+    private boolean validarCorreo(String _e){
+        if(Validacion.validar("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", _e, "Correo Electrónico no válido!", "[Pollock] - Iniciar Sesión")){
+            return true;
+        }else{
+            return false;
         }
     }
     /**
@@ -158,22 +244,26 @@ public class Login extends javax.swing.JFrame {
         });
     }
     public static boolean iniciarSesion(String correo,String pass){
-        if(Usuario_Model.buscarUsuario(correo, pass)){
-            if(Usuario_Model.obtenerT(correo, pass)){
-            typeU = "B";
-            }else{
-                typeU = "U";
-            }
-            Usuario usuarioSes = new Usuario(correo,pass,true);
-            JOptionPane.showMessageDialog(null, "Bienvenido a Pollock!!","Iniciar Sesión",JOptionPane.INFORMATION_MESSAGE);
+        Usuario u = Usuario_Model.buscarUsuario(correo, pass);
+        if(u != null){
+            typeU = u.getTipoUsuario();
+            JOptionPane.showMessageDialog(null, "Bienvenido a Pollock!!","[Pollock] - Iniciar Sesión",JOptionPane.INFORMATION_MESSAGE);
             return true;            
         }else{
             JOptionPane.showMessageDialog(null, "Las credenciales ingresadas no son correctas","Inicio de Sesión",JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
+    
+    private boolean enviarCorreo(String correo, String contrasenna) {
+        String mensaje = "<h5>Contraseña: </h5>" + contrasenna;
+        Email email = new Email(correo);
+        return email.enviar(mensaje, "[Pollock] - Recuperación de Contraseña");
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciar;
+    private javax.swing.JButton btnPass;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

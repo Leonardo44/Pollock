@@ -5,6 +5,8 @@
  */
 package sv.edu.udb.form.usuario;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,12 +15,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import sv.edu.udb.connection.Email;
 import sv.edu.udb.entidades.Encriptar;
 import sv.edu.udb.entidades.TipoUsuario;
 import sv.edu.udb.entidades.Usuario;
 import sv.edu.udb.modelos.TipoUsuario_Model;
 import sv.edu.udb.modelos.Usuario_Model;
+import sv.edu.udb.pollock.Pollock;
 import sv.edu.udb.validacion.Validacion;
 /**
  *
@@ -32,6 +37,20 @@ public class AgregarUsuario extends javax.swing.JInternalFrame {
     public AgregarUsuario() {
         initComponents();
         cargarTipoUsuario();
+        
+        String savePath = System.getProperty("user.dir") + "^web^images";
+        savePath = String.join(System.getProperty("file.separator"), savePath.split("\\^"));
+
+        ImageIcon i = null;
+        URL url = null;
+        try {
+            url = new URL("file:///" + savePath + System.getProperty("file.separator") + "logo.png");
+            i = new ImageIcon(url);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Pollock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        setFrameIcon(i);
     }
 
     /**
@@ -57,6 +76,7 @@ public class AgregarUsuario extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setClosable(true);
+        setTitle("[Pollock] - Agregar Usuario");
 
         lblNombre.setText("Nombres");
 
@@ -178,8 +198,12 @@ public class AgregarUsuario extends javax.swing.JInternalFrame {
                 if(compararFecha(fechaNacimiento)){//Comparamos que la fehca ingresada no sea mayor a la actual
                     if(Usuario_Model.verificarCorreo(correo)){
                         if(Usuario_Model.insertar(new Usuario(idUsuario, nombre, apellido, correo, fechaNacimiento, password, true, tipo))){
-                            JOptionPane.showMessageDialog(null, "Usuario registrado correctamente", "Registro de Usuario", JOptionPane.INFORMATION_MESSAGE);
-                            limpiarComponentes();//Reiniciamos componentes
+                            if(enviarCorreo(correo, Encriptar.desencriptar(password))){
+                                JOptionPane.showMessageDialog(null, "Usuario registrado correctamente.\n ", "Registro de Usuario", JOptionPane.INFORMATION_MESSAGE); 
+                                limpiarComponentes(); //Se reinician campos
+                            }else{
+                                JOptionPane.showMessageDialog(null, "ha ocurrido un error", "Registro de Usuario", JOptionPane.ERROR_MESSAGE);
+                            }
                         }else{
                             JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "Registro de Usuario", JOptionPane.ERROR_MESSAGE);
                         }
@@ -228,6 +252,12 @@ public class AgregarUsuario extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Ingresar una fecha válida", "Registro de Usuario", JOptionPane.ERROR_MESSAGE);
         }
         return false;
+    }
+    
+    private boolean enviarCorreo(String correo, String contrasenna) {
+        String mensaje = "<h5>Contraseña: </h5>" + contrasenna;
+        Email email = new Email(correo);
+        return email.enviar(mensaje, "[Pollock] - Registro de Usuario");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

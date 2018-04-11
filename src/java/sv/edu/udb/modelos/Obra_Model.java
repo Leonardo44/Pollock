@@ -75,6 +75,7 @@ public class Obra_Model {
             return null;
         }
     }
+    
     public static List<Obra> obtenerObras(){
         List<Obra> _oList = new ArrayList();
         PreparedStatement obtenerLibros = DBConection.getStatement("SELECT * FROM Obra;");
@@ -87,6 +88,76 @@ public class Obra_Model {
                 }else{
                     return null;
                 }
+            }
+            return _oList;
+        } catch (SQLException ex) {    
+            Logger.getLogger(Obra_Model.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public static List<Obra> obtenerObras(boolean relaciones){
+        List<Obra> _oList = new ArrayList();
+        PreparedStatement obtenerLibros = DBConection.getStatement("SELECT * FROM Obra;");
+        try {
+            try (ResultSet data = obtenerLibros.executeQuery()) {
+                if(data != null){
+                    while (data.next()) {
+                        
+                        Obra _o = new Obra(data.getString(1), data.getString(2), data.getString(3), data.getString(4), null);
+                        
+                        if (relaciones) {
+                            PreparedStatement obtenerAutor = DBConection.getStatement("SELECT a.idAutor, a.nombres, a.apellidos, a.fechaNac, a.idPais FROM autor a INNER JOIN obra o ON o.idAutor = a.idAutor WHERE o.idObra = ?;");
+                            PreparedStatement obtenerCalificacion = DBConection.getStatement("SELECT calificacion FROM Obra WHERE idObra= ?;");
+                            PreparedStatement obtenerComentarios = DBConection.getStatement("SELECT * FROM Comentario WHERE idObra= ?;");
+
+                            obtenerAutor.setString(1, _o.getIdObra());
+                            obtenerCalificacion.setString(1, _o.getIdObra());
+                            obtenerComentarios.setString(1, _o.getIdObra());
+
+                            ResultSet DataA = obtenerAutor.executeQuery();
+                            ResultSet DataC = obtenerCalificacion.executeQuery();
+                            ResultSet DataCo = obtenerComentarios.executeQuery();
+
+                            Autor _a = null;
+                            float _c = 0;
+                            List<Comentario> _co = new ArrayList();
+
+                            Date date = null;
+                            DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+
+                            if (DataA != null) {
+                                while (DataA.next()) {
+                                    date = df.parse(DataA.getDate(4).toString());
+                                    _a = new Autor(DataA.getString(1), DataA.getString(2), DataA.getString(3), date);
+                                }
+                            }
+
+                            if (DataC != null) {
+                                while (DataC.next()) {
+                                    _c += DataC.getFloat(1);
+                                }
+                            }
+
+                            if (DataCo != null) {
+                                while (DataCo.next()) {
+                                    date = (DataCo.getDate(3));
+                                    _co.add(new Comentario(DataCo.getString(2), date, DataCo.getString(4)));
+                                }
+                            }
+
+                            _o.setAutor(_a);
+                            _o.setCalificacion(_c);
+                            _o.setComentarios(_co);
+                        }
+                        
+                        _oList.add(_o);
+                    }
+                }else{
+                    return null;
+                }
+            } catch (ParseException ex) {
+                Logger.getLogger(Obra_Model.class.getName()).log(Level.SEVERE, null, ex);
             }
             return _oList;
         } catch (SQLException ex) {    

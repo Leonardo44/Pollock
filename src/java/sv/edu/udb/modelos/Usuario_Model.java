@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.udb.connection.DBConection;
+import sv.edu.udb.entidades.Encriptar;
 import sv.edu.udb.entidades.Usuario;
 
 /**
@@ -51,7 +52,26 @@ public class Usuario_Model{
             ResultSet data = obtenerSQL.executeQuery();
             Usuario _u = null;
             data.next();
-            boolean estado = ((data.getInt("estado") == 1) ? true : false);
+            boolean estado = (data.getInt("estado") == 1);
+            DateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
+            Date fechaNacimiento = ft.parse(data.getString("fechaNacimiento"));    
+            _u = new Usuario(data.getString("idUsuario"), data.getString("nombre"), data.getString("apellido"), data.getString("correo"), fechaNacimiento, data.getString("password"), estado, data.getString("tipoUsuario"));
+            data.close();
+            return ((_u != null) ? _u : null);
+        } catch (SQLException | ParseException ex) {
+            Logger.getLogger(Usuario_Model.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public static Usuario obtenerUsuarioCorreo(String _e){
+        PreparedStatement obtenerSQL = DBConection.getStatement("SELECT * FROM usuario WHERE correo = ?;");
+        try {
+            obtenerSQL.setString(1, _e);
+            ResultSet data = obtenerSQL.executeQuery();
+            Usuario _u = null;
+            data.next();
+            boolean estado = (data.getInt("estado") == 1);
             DateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
             Date fechaNacimiento = ft.parse(data.getString("fechaNacimiento"));    
             _u = new Usuario(data.getString("idUsuario"), data.getString("nombre"), data.getString("apellido"), data.getString("correo"), fechaNacimiento, data.getString("password"), estado, data.getString("tipoUsuario"));
@@ -208,30 +228,32 @@ public class Usuario_Model{
             return false;
         }
     }
-    public static boolean buscarUsuario(String correo, String password){
-        PreparedStatement consulta = DBConection.getStatement("SELECT COUNT(idUsuario) FROM Usuario WHERE correo = ? AND password = ?");
+    public static Usuario buscarUsuario(String correo, String password){
+        PreparedStatement consulta = DBConection.getStatement("SELECT * FROM Usuario WHERE correo = ?");
         try{
-            consulta.setString(1,correo);
-            consulta.setString(2, password);
-            ResultSet data = consulta.executeQuery();
-            data.next();
-            int num = data.getInt(1);
-            data.close();
-            if(num > 0){
-                return true;
-            }else{
-                return false;
+            consulta.setString(1,correo);;
+            try (ResultSet data = consulta.executeQuery()) {
+                if(data != null){
+                    while(data.next()){
+                        return Usuario_Model.obtenerUsuario(data.getString("idUsuario"));
+                    }
+                }else{
+                    return null;
+                }
             }
-        }catch(Exception ex){
+        }catch(SQLException ex){
             Logger.getLogger(Usuario_Model.class.getName()).log(Level.SEVERE,null,ex);
-            return false;
+            return null;
         }
+        return null;
+        
     }
+    
     public static boolean obtenerT(String correo,String password){
         PreparedStatement consulta = DBConection.getStatement("SELECT tipoUsuario FROM Usuario WHERE correo = ? AND password = ?");
         try{
             consulta.setString(1,correo);
-            consulta.setString(2, password);
+            consulta.setString(2, Encriptar.encriptar(password));
             ResultSet datos = consulta.executeQuery();
             datos.next();
             String tipoU = datos.getString("tipoUsuario");

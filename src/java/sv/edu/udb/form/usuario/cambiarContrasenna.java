@@ -5,14 +5,23 @@
  */
 package sv.edu.udb.form.usuario;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import sv.edu.udb.connection.Email;
 import sv.edu.udb.entidades.Encriptar;
 import sv.edu.udb.entidades.TipoUsuario;
 import sv.edu.udb.entidades.Usuario;
 import sv.edu.udb.modelos.Usuario_Model;
+import sv.edu.udb.pollock.Pollock;
 import sv.edu.udb.validacion.Validacion;
 
 /**
@@ -24,6 +33,7 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
     private List<Usuario> usuarios = new ArrayList<Usuario>();
     private List<TipoUsuario> tipos = new ArrayList<TipoUsuario>();
     private String idUsuarioSeleccionado;
+    private int fila;
     
     /**
      * Creates new form cambiarContrasenna
@@ -33,6 +43,20 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
         txtNombreUsuario.setEnabled(false);
         inicializarComponentes();
         cargarUsuarios();
+        
+        String savePath = System.getProperty("user.dir") + "^web^images";
+        savePath = String.join(System.getProperty("file.separator"), savePath.split("\\^"));
+
+        ImageIcon i = null;
+        URL url = null;
+        try {
+            url = new URL("file:///" + savePath + System.getProperty("file.separator") + "logo.png");
+            i = new ImageIcon(url);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Pollock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        setFrameIcon(i);
     }
     
     private void cargarUsuarios(){
@@ -42,7 +66,11 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
         
         for(Usuario _u : usuarios){
             String estado = (_u.isEstado()) ? "Activo" : "Pasivo";
-            Object[] nuevaLinea = {_u.getNombre(), _u.getApellido(), _u.getFechaNacimiento(), _u.getCorreo(),  estado, _u.getTipoUsuario()};
+            
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String date = df.format(_u.getFechaNacimiento());
+            
+            Object[] nuevaLinea = {_u.getNombre(), _u.getApellido(), date, _u.getCorreo(),  estado, _u.getTipoUsuario()};
             modelo.addRow(nuevaLinea);
         }       
         jtblUsuarios.setModel(modelo);
@@ -81,6 +109,8 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
         jLabel2.setText("jLabel2");
 
         setClosable(true);
+        setTitle("[Pollock] - Cambiar Contraseña");
+        setToolTipText("");
 
         lblFiltro.setText("Filtro");
 
@@ -116,7 +146,7 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
 
         lblContrasenna.setText("Nueva Contraseña");
 
-        btnProcesar.setText("jButton1");
+        btnProcesar.setText("Modificar");
         btnProcesar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnProcesarActionPerformed(evt);
@@ -209,10 +239,14 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
     private void btnProcesarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarActionPerformed
         if(idUsuarioSeleccionado.length() > 0){
             if(validarCampos()){
-                if(Usuario_Model.modificarContrasenna(new Usuario(idUsuarioSeleccionado, Encriptar.encriptar(txtContrasenna.getText())))){
-                    JOptionPane.showMessageDialog(null, "Contraseña modificada!", "Cambiar Contraseña", JOptionPane.INFORMATION_MESSAGE);
-                    inicializarComponentes();
-                    cargarUsuarios();
+                if(Usuario_Model.modificarContrasenna(new Usuario(idUsuarioSeleccionado, Encriptar.encriptar(txtContrasenna.getText())))){           
+                    if (enviarCorreo(usuarios.get(fila).getCorreo(), (txtContrasenna.getText().trim()))) {
+                        JOptionPane.showMessageDialog(null, "Contraseña modificada!", "Cambiar Contraseña", JOptionPane.INFORMATION_MESSAGE);
+                        cargarUsuarios();
+                        inicializarComponentes();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "ha ocurrido un error", "Registro de Usuario", JOptionPane.ERROR_MESSAGE);
+                    }
                 }else{
                     JOptionPane.showMessageDialog(null, "Ha ocurrido un error!", "Cambiar Contraseña", JOptionPane.ERROR_MESSAGE);
                 }
@@ -224,7 +258,7 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
 
     private void jtblUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtblUsuariosMouseClicked
         if(usuarios.size() > 0){
-            int fila = jtblUsuarios.rowAtPoint(evt.getPoint());
+            fila = jtblUsuarios.rowAtPoint(evt.getPoint());
             if(fila > -1){
                 idUsuarioSeleccionado = usuarios.get(fila).getIdUsuario();
                 txtNombreUsuario.setText(usuarios.get(fila).getIdUsuario());
@@ -241,6 +275,12 @@ public class cambiarContrasenna extends javax.swing.JInternalFrame {
             }
         }
         return false;
+    }
+    
+    private boolean enviarCorreo(String correo, String contrasenna) {
+        String mensaje = "<h5>Contraseña: </h5>" + contrasenna;
+        Email email = new Email(correo);
+        return email.enviar(mensaje, "[Pollock] - Modificación de Contraseña");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

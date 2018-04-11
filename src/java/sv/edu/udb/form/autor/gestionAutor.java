@@ -1,6 +1,8 @@
 package sv.edu.udb.form.autor;
 
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,15 +11,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sv.edu.udb.entidades.Autor;
 import sv.edu.udb.entidades.Pais;
-import sv.edu.udb.entidades.Usuario;
 import sv.edu.udb.form.usuario.AgregarUsuario;
 import sv.edu.udb.modelos.Autor_Model;
 import sv.edu.udb.modelos.Pais_Model;
-import sv.edu.udb.modelos.Usuario_Model;
+import sv.edu.udb.pollock.Pollock;
 import sv.edu.udb.validacion.Validacion;
 
 /*
@@ -32,8 +34,8 @@ import sv.edu.udb.validacion.Validacion;
  */
 public class gestionAutor extends javax.swing.JInternalFrame {
     private DefaultTableModel modelo = null;
-    private List<Autor> autores = new ArrayList<Autor>();
-    private List<Pais> paises = new ArrayList<Pais>();
+    private List<Autor> autores = Autor_Model.obtenerAutores();
+    private List<Pais> paises = Pais_Model.obtenerPaises();
     private String idUsuarioSeleccionado = "";
     
     /**
@@ -44,6 +46,20 @@ public class gestionAutor extends javax.swing.JInternalFrame {
         inicializarComponentes();
         cargarAutores();
         cargarPais();
+        
+        String savePath = System.getProperty("user.dir") + "^web^images";
+        savePath = String.join(System.getProperty("file.separator"), savePath.split("\\^"));
+
+        ImageIcon i = null;
+        URL url = null;
+        try {
+            url = new URL("file:///" + savePath + System.getProperty("file.separator") + "logo.png");
+            i = new ImageIcon(url);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Pollock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        setFrameIcon(i);
     }
 
     /**
@@ -74,7 +90,7 @@ public class gestionAutor extends javax.swing.JInternalFrame {
         btnModificar = new javax.swing.JButton();
 
         setClosable(true);
-        setTitle("Gestión de Autores");
+        setTitle("[Pollock] - Gestión de Autor");
 
         lblFiltro.setText("Filtro");
 
@@ -355,7 +371,9 @@ public class gestionAutor extends javax.swing.JInternalFrame {
         modelo = new DefaultTableModel(datos, columns);
         
         for(Autor _a : autores){
-            Object[] nuevaLinea = {_a.getNombres(), _a.getApellidos(), _a.getFechaNac(), _a.getPais()};
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String date = format.format(_a.getFechaNac());
+            Object[] nuevaLinea = {_a.getNombres(), _a.getApellidos(), date, _a.getPais()};
             modelo.addRow(nuevaLinea);
         }       
         jtbAutores.setModel(modelo);

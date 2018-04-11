@@ -185,6 +185,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` VALUES ('B0001','Jasson Alexander','Lopez Soriano','jasson_alex99@hotmail.com','1999-07-10','B0001','84472/74362/10143*109123-112163-66282!80432/72342*',1,'B'),('B0002','Franklin Armando','Esquivel Guevara','franklin.esquivel@outlook.com','1998-10-09','B0002','50a2*48e2/49l2!53L2!48e2!49l2*50a2/54F2*',1,'B'),('U0003','Diego Alberto','Lemus Torres','ciegolem7@gmail.es','1998-09-18','U0003','57p2!121253-10473/66282/76382*51y2*88512-9702/',1,'U'),('U0004','Marta Carolina','Rosado Pérez','marta.rope@gmail.com','1998-08-12','U0004','10693-51y2*56o2/65272-68302-115193!111153!10363!',1,'U'),('U0005','Leonarlo Elenilson','Lopez Cañas','lopezleonardo44@gmail.com','1999-04-09','U0005','75372-10693-66282/116203-84472!49l2/70322-56o2!',1,'U');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -197,4 +198,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-09  0:02:48
+-- Dump completed on 2018-04-11  2:20:59

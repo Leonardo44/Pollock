@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,6 +24,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import javax.swing.ImageIcon;
+import sv.edu.udb.pollock.Pollock;
 /**
  *
  * @author Diego Lemus
@@ -37,6 +40,20 @@ public class AgregarObra extends javax.swing.JInternalFrame {
         initComponents();
         iniciarComponentes();
         cargarAutores();
+        
+        String savePath = System.getProperty("user.dir") + "^web^images";
+        savePath = String.join(System.getProperty("file.separator"), savePath.split("\\^"));
+
+        ImageIcon i = null;
+        URL url = null;
+        try {
+            url = new URL("file:///" + savePath + System.getProperty("file.separator") + "logo.png");
+            i = new ImageIcon(url);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Pollock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        setFrameIcon(i);
     }
     public void iniciarComponentes(){
         cargarAutores();
@@ -73,7 +90,7 @@ public class AgregarObra extends javax.swing.JInternalFrame {
         txtDescripcion = new javax.swing.JTextArea();
 
         setClosable(true);
-        setTitle("Registrar Obras");
+        setTitle("[Pollock] - Registrar Obras");
 
         lblDescripcion.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblDescripcion.setText("Descripción");

@@ -5,6 +5,13 @@
  */
 package sv.edu.udb.pollock;
 
+import java.awt.Image;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import sv.edu.udb.form.autor.AgregarAutor;
 import sv.edu.udb.form.autor.gestionAutor;
 import sv.edu.udb.form.obras.AgregarObra;
@@ -24,15 +31,37 @@ public class Pollock extends javax.swing.JFrame {
      */
     public Pollock(String tipouser) {
         initComponents();
+        setExtendedState(Pollock.MAXIMIZED_BOTH);
+        
+        String savePath = System.getProperty("user.dir") + "^web^images";
+        savePath = String.join(System.getProperty("file.separator"), savePath.split("\\^"));
+
+        Image i = null;
+        URL url = null;
+        try {
+            url = new URL("file:///" + savePath + System.getProperty("file.separator") + "logo.png");
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Pollock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+            i = ImageIO.read(url);
+        } catch (IOException ex) {
+            Logger.getLogger(Pollock.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        setIconImage(i);
+        
         tipoUsuario = tipouser;
+        
         if(tipoUsuario.equals("B")){
-        fileMenu.setEnabled(true);
-        editMenu.setEnabled(true);
-        helpMenu.setEnabled(true);
+            fileMenu.setEnabled(true);
+            editMenu.setEnabled(true);
+            helpMenu.setEnabled(true);
         }else if(tipoUsuario.equals("U")){
-        fileMenu.setEnabled(false);
-        editMenu.setEnabled(false);
-        helpMenu.setEnabled(true);
+            fileMenu.setEnabled(false);
+            editMenu.setEnabled(false);
+            helpMenu.setEnabled(true);
         }
     }
     /**
@@ -59,6 +88,7 @@ public class Pollock extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("[Pollock] - Sistema Gestor de Obras");
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("Autores");
